@@ -309,6 +309,22 @@ body.equipment-editing #equipmentTable tr:hover td{background:#fffdf1}
 .statusUpdateBody input,.statusUpdateBody textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit}
 .statusUpdateActions{display:flex;justify-content:flex-end;gap:10px;padding:16px 22px;border-top:1px solid #e5edf6;background:#f8fafc}
 
+
+.gpsLocationModal{position:fixed;inset:0;z-index:10002;background:rgba(15,23,42,.62);display:none;align-items:center;justify-content:center;padding:24px}
+.gpsLocationModal.active{display:flex}
+.gpsLocationDialog{width:min(620px,94vw);background:#fff;border-radius:18px;box-shadow:0 24px 70px rgba(15,23,42,.42);overflow:hidden}
+.gpsLocationHeader{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:18px 22px;border-bottom:1px solid #e5edf6}
+.gpsLocationHeader h2{margin:0;font-size:22px}
+.gpsLocationBody{padding:18px 22px;display:grid;gap:14px;color:#334155;line-height:1.45}
+.gpsLocationBody .gpsBilingualNotice{background:#f8fafc;border:1px solid #dbe5f1;border-radius:14px;padding:14px 16px}
+.gpsLocationBody .gpsBilingualNotice p{margin:0 0 10px}
+.gpsLocationBody .gpsBilingualNotice p:last-child{margin-bottom:0}
+.gpsLocationActions{display:flex;justify-content:flex-end;gap:10px;padding:16px 22px;background:#f8fafc;border-top:1px solid #e5edf6;flex-wrap:wrap}
+.gpsLocationStatus{font-size:13px;color:#64748b}
+.gpsLocationStatus.error{color:#b91c1c}
+.gpsLocationStatus.success{color:#166534}
+.gpsMapLink{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-weight:800;color:#2563eb}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -1624,6 +1640,128 @@ async function confirmStatusUpdate(){
 }
 
 
+
+const UPDATE_LAST_LOCATION_FLOW_URL="https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/24869f85a83d469d8ad5aaf7d823bbb8/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=e7FX4m0Vt7l0YcO-X5mkApGDshnRZz4vTI3R1ZDMnL4";
+let gpsLocationPromptShownFor='';
+let gpsLocationCurrentInventory='';
+let gpsLocationUpdateInProgress=false;
+
+function isOpenedFromQrCardLink(inv){
+  const params=new URLSearchParams(window.location.search);
+  const urlInv=getInventoryFromUrl();
+  return !!inv && !!urlInv && cleanValue(urlInv)===cleanValue(inv) && (params.get('section')==='card' || !!params.get('inv') || !!params.get('inventory') || !!params.get('equipment'));
+}
+
+function showGpsLocationPromptIfNeeded(inv){
+  inv=cleanValue(inv);
+  if(!inv)return;
+  if(!isOpenedFromQrCardLink(inv))return;
+  if(gpsLocationPromptShownFor===inv)return;
+  gpsLocationPromptShownFor=inv;
+  gpsLocationCurrentInventory=inv;
+  const modal=document.getElementById('gpsLocationModal');
+  const subtitle=document.getElementById('gpsLocationSubtitle');
+  const status=document.getElementById('gpsLocationStatus');
+  const approve=document.getElementById('approveGpsLocationBtn');
+  if(subtitle)subtitle.textContent='Inventory number: '+inv;
+  if(status){status.className='gpsLocationStatus';status.textContent='';}
+  if(approve){approve.disabled=false;approve.textContent='Подтвердить / Approve';}
+  if(modal)modal.classList.add('active');
+}
+
+function closeGpsLocationModal(){
+  if(gpsLocationUpdateInProgress)return;
+  const modal=document.getElementById('gpsLocationModal');
+  if(modal)modal.classList.remove('active');
+}
+
+function formatLocationDateForFlow(date){
+  const d=date||new Date();
+  const pad=n=>String(n).padStart(2,'0');
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+}
+
+function getPhonePositionForEquipment(){
+  return new Promise((resolve,reject)=>{
+    if(!navigator.geolocation){
+      reject(new Error('Geolocation is not supported by this browser.'));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      pos=>resolve(pos),
+      err=>{
+        let msg='Could not get GPS location.';
+        if(err&&err.code===1)msg='GPS permission was denied by user.';
+        if(err&&err.code===2)msg='GPS position is unavailable.';
+        if(err&&err.code===3)msg='GPS request timed out.';
+        reject(new Error(msg));
+      },
+      {enableHighAccuracy:true,timeout:20000,maximumAge:0}
+    );
+  });
+}
+
+async function approveGpsLocationUpdate(){
+  const inv=cleanValue(gpsLocationCurrentInventory||getInventoryFromUrl());
+  const status=document.getElementById('gpsLocationStatus');
+  const btn=document.getElementById('approveGpsLocationBtn');
+  if(!inv){if(status){status.className='gpsLocationStatus error';status.textContent='Inventory number is missing.';}return;}
+  if(location.protocol!=='https:' && location.protocol!=='http:'){
+    if(status){status.className='gpsLocationStatus error';status.textContent='GPS works reliably only when the page is opened through HTTPS.';}
+    return;
+  }
+  gpsLocationUpdateInProgress=true;
+  if(btn){btn.disabled=true;btn.textContent='Getting GPS...';}
+  if(status){status.className='gpsLocationStatus';status.textContent='Requesting phone GPS permission...';}
+  try{
+    const pos=await getPhonePositionForEquipment();
+    const lat=pos.coords.latitude;
+    const lng=pos.coords.longitude;
+    const payload={
+      'inventory number':inv,
+      'last known latitude':lat,
+      'last known longitude':lng,
+      'last location date':formatLocationDateForFlow(new Date())
+    };
+    if(btn)btn.textContent='Saving...';
+    if(status)status.textContent='Saving GPS position to SharePoint database...';
+    const res=await fetch(UPDATE_LAST_LOCATION_FLOW_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    if(!res.ok)throw new Error('HTTP '+res.status+' '+res.statusText);
+    if(status){status.className='gpsLocationStatus success';status.textContent='GPS location saved successfully.';}
+    fakeToast('GPS location saved.');
+    try{
+      const row=equipmentRows.find(r=>cleanValue(getEquipmentField(r,'inventory number'))===inv);
+      if(row){
+        row['last known latitude']=lat;
+        row['last known longitude']=lng;
+        row['last location date']=payload['last location date'];
+        renderEquipmentCard(row);
+      }
+    }catch(_e){}
+    setTimeout(()=>{
+      gpsLocationUpdateInProgress=false;
+      closeGpsLocationModal();
+    },900);
+  }catch(e){
+    console.error(e);
+    if(status){status.className='gpsLocationStatus error';status.textContent=e.message||String(e);}
+    fakeToast('Could not save GPS location: '+(e.message||String(e)));
+    if(btn){btn.disabled=false;btn.textContent='Подтвердить / Approve';}
+    gpsLocationUpdateInProgress=false;
+  }
+}
+
+function formatLastKnownGps(row){
+  const lat=cleanValue(getEquipmentField(row,'last known latitude'));
+  const lng=cleanValue(getEquipmentField(row,'last known longitude'));
+  if(!lat&&!lng)return '';
+  if(!lat||!lng)return safeText((lat||'')+' '+(lng||''));
+  const url='https://www.google.com/maps?q='+encodeURIComponent(lat+','+lng);
+  return '<a class="gpsMapLink" href="'+url+'" target="_blank" rel="noopener">Open map</a><div class="smallHint">'+safeText(lat)+', '+safeText(lng)+'</div>';
+}
+
+
+
 function renderEquipmentCard(row){
   const cards=document.querySelectorAll('#card .card');
   const card=cards[0];
@@ -1656,6 +1794,8 @@ function renderEquipmentCard(row){
       '<tr><td>Status changed by</td><td>'+safeText(getEquipmentField(row,'status changed by'))+'</td></tr>'+
       '<tr><td>Status comment</td><td>'+safeText(getEquipmentField(row,'status comment')||getEquipmentField(row,'last action comment'))+'</td></tr>'+
       '<tr><td>Location</td><td>'+safeText(loc)+'</td></tr>'+
+      '<tr><td>Last known GPS</td><td>'+formatLastKnownGps(row)+'</td></tr>'+
+      '<tr><td>Last location date</td><td>'+safeText(excelDateToText(getEquipmentField(row,'last location date'))||cleanValue(getEquipmentField(row,'last location date')))+'</td></tr>'+
       '<tr><td>Employee</td><td>'+safeText(employee)+'</td></tr>'+
       '<tr><td>Master</td><td>'+safeText(master)+'</td></tr>'+
       '<tr><td>Validation date</td><td>'+safeText(validation)+'</td></tr>'+
@@ -1687,6 +1827,7 @@ function renderEquipmentCard(row){
       new QRCode(el,{text:getEquipmentCardLink(inv),width:220,height:220,correctLevel:QRCode.CorrectLevel.M});
     }
   },30);
+  setTimeout(()=>showGpsLocationPromptIfNeeded(inv),120);
 }
 
 
@@ -1831,6 +1972,32 @@ setTimeout(removeProblemReportsUi,1200);
     <div class="statusUpdateActions">
       <button class="btn secondary" onclick="closeStatusUpdateModal()">Cancel</button>
       <button class="btn" id="confirmStatusUpdateBtn" onclick="confirmStatusUpdate()">Save status</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="gpsLocationModal" class="gpsLocationModal">
+  <div class="gpsLocationDialog">
+    <div class="gpsLocationHeader">
+      <div>
+        <h2>GPS location confirmation</h2>
+        <div class="smallHint" id="gpsLocationSubtitle">Inventory number</div>
+      </div>
+      <button class="modalClose" onclick="closeGpsLocationModal()">×</button>
+    </div>
+    <div class="gpsLocationBody">
+      <div class="gpsBilingualNotice">
+        <p><b>Для дальнейшего использования сварочного оборудования необходимо подтвердить отправку GPS информации.</b></p>
+        <p><b>To continue using the welding equipment, you must confirm the sending of GPS information.</b></p>
+      </div>
+      <div class="smallHint">Будет сохранено последнее известное местоположение оборудования по моменту сканирования QR-кода.</div>
+      <div class="smallHint">The database will store the equipment last known position at the moment of QR code scanning.</div>
+      <div id="gpsLocationStatus" class="gpsLocationStatus"></div>
+    </div>
+    <div class="gpsLocationActions">
+      <button class="btn secondary" onclick="closeGpsLocationModal()">Cancel</button>
+      <button class="btn" id="approveGpsLocationBtn" onclick="approveGpsLocationUpdate()">Подтвердить / Approve</button>
     </div>
   </div>
 </div>
