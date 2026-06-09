@@ -324,6 +324,22 @@ body.equipment-editing #equipmentTable tr:hover td{background:#fffdf1}
 .gpsLocationStatus.error{color:#b91c1c}
 .gpsLocationStatus.success{color:#166534}
 .gpsMapLink{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-weight:800;color:#2563eb}
+.actionLogHeader{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.actionLogStatus{font-size:13px;color:#64748b;margin-top:4px}
+.actionLogStatus.error{color:#b91c1c}
+.actionLogTools{display:flex;gap:8px;flex-wrap:wrap}
+.actionLogTableWrap{overflow:auto;max-height:62vh;border:1px solid var(--line);border-radius:14px}
+#logTable{min-width:1180px}
+#logTable thead input{width:100%;box-sizing:border-box;border:1px solid #dbe5f1;border-radius:8px;padding:6px 8px;font-size:12px;background:white}
+#logTable thead .filterRow th{background:#f8fafc;position:sticky;top:40px;z-index:3}
+#logTable tbody td{vertical-align:top}
+.recentActionLog{margin-top:16px;border-top:1px solid #e5edf6;padding-top:14px}
+.recentActionLog h3{margin:0 0 8px;font-size:16px}
+.recentActionList{display:grid;gap:8px}
+.recentActionItem{border:1px solid #e5edf6;border-radius:12px;padding:9px 10px;background:#f8fafc}
+.recentActionItem .meta{font-size:12px;color:#64748b;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.recentActionItem .mainLine{margin:0;padding:0;width:auto;color:#0f172a;font-size:13px}
+.recentActionEmpty{font-size:13px;color:#64748b;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:10px}
 
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -446,7 +462,43 @@ body.equipment-editing #equipmentTable tr:hover td{background:#fffdf1}
   </div>
 </div>
 
-<section id="log" class="section"><div class="card"><div class="toolbar"><div><h2>Action Log</h2><p class="subtle">Every action is recorded for traceability, invoice check and reporting.</p></div><button class="btn secondary" onclick="fakeToast('Filtered log exported')">Export to Excel</button></div><div class="filterGrid"><label>Date from<input id="logDateFrom" type="date" onchange="applyLogFilters()"></label><label>Date to<input id="logDateTo" type="date" onchange="applyLogFilters()"></label><label>Equipment<select id="logEquipment" onchange="applyLogFilters()"><option value="">All equipment</option><option>1723-00003</option><option>1723-00033</option><option>1723-00144</option></select></label><label>Action<select id="logAction" onchange="applyLogFilters()"><option value="">All actions</option><option>Service completed</option><option>Problem reported</option><option>Out of service</option><option>Taken into work</option><option>Returned</option><option>Inventory scan</option></select></label><label>User<select id="logUser" onchange="applyLogFilters()"><option value="">All users</option><option>ELME service</option><option>Welder</option><option>Master</option><option>Equipment manager</option></select></label><div class="spanControls"><button class="btn secondary" onclick="clearLogFilters()">Clear filters</button></div></div><br><table id="logTable"><thead><tr><th>Date / time</th><th>Equipment</th><th>Action</th><th>User</th><th>Comment</th></tr></thead><tbody><tr><td>2026-01-03 08:12</td><td>1723-00003</td><td>Service completed</td><td>ELME service</td><td>Report attached</td></tr><tr><td>2026-01-05 10:44</td><td>1723-00033</td><td>Problem reported</td><td>Welder</td><td>Wire feed issue</td></tr><tr><td>2026-01-05 11:20</td><td>1723-00033</td><td>Out of service</td><td>Master</td><td>Moved to repair zone</td></tr><tr><td>2026-01-08 14:02</td><td>1723-00144</td><td>Taken into work</td><td>Welder</td><td>Project area</td></tr><tr><td>2026-01-08 18:25</td><td>1723-00144</td><td>Returned</td><td>Welder</td><td>No issues</td></tr><tr><td>2026-01-12 09:00</td><td>1723-00003</td><td>Inventory scan</td><td>Equipment manager</td><td>Confirmed in Welding hall A</td></tr></tbody></table></div></section>
+<section id="log" class="section">
+  <div class="card">
+    <div class="actionLogHeader">
+      <div>
+        <h2>Action Log</h2>
+        <p class="subtle">Full TXT log from SharePoint. Use filters under each column to find actions.</p>
+        <div id="actionLogStatus" class="actionLogStatus">Log is not loaded yet.</div>
+      </div>
+      <div class="actionLogTools">
+        <button class="btn secondary" onclick="loadActionLog(true)">Reload log</button>
+        <button class="btn secondary" onclick="clearLogFilters()">Clear filters</button>
+      </div>
+    </div>
+    <br>
+    <div class="actionLogTableWrap">
+      <table id="logTable">
+        <thead>
+          <tr>
+            <th>Date / time</th><th>Inventory number</th><th>Action type</th><th>Field name</th><th>Old value</th><th>New value</th><th>Changed by</th><th>Source</th><th>Comment</th>
+          </tr>
+          <tr class="filterRow">
+            <th><input id="logFilterDate" placeholder="filter date" oninput="renderActionLogTable()"></th>
+            <th><input id="logFilterInventory" placeholder="filter inventory" oninput="renderActionLogTable()"></th>
+            <th><input id="logFilterAction" placeholder="filter action" oninput="renderActionLogTable()"></th>
+            <th><input id="logFilterField" placeholder="filter field" oninput="renderActionLogTable()"></th>
+            <th><input id="logFilterOld" placeholder="filter old" oninput="renderActionLogTable()"></th>
+            <th><input id="logFilterNew" placeholder="filter new" oninput="renderActionLogTable()"></th>
+            <th><input id="logFilterUser" placeholder="filter user" oninput="renderActionLogTable()"></th>
+            <th><input id="logFilterSource" placeholder="filter source" oninput="renderActionLogTable()"></th>
+            <th><input id="logFilterComment" placeholder="filter comment" oninput="renderActionLogTable()"></th>
+          </tr>
+        </thead>
+        <tbody><tr><td colspan="9" class="subtle">Press Reload log or open this tab to load data from TXT.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
 <div id="addEquipmentModal" class="equipmentModalOverlay" onclick="closeAddEquipmentModalOnBackdrop(event)">
   <div class="equipmentModal" role="dialog" aria-modal="true" aria-labelledby="addEquipmentTitle">
     <div class="equipmentModalHeader">
@@ -476,6 +528,10 @@ const MONTHLY_APPROVED_PLANS_FOLDER = "/EquipmentAndMaintenance/05_Register/00_M
 const YEARLY_APPROVED_PLANS_FOLDER = "/EquipmentAndMaintenance/05_Register/00_MOC_Maintanence_start_page/Approved_plans/Yearly plans";
 
 const DELETE_EQUIPMENT_URL = "https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/376f9f01e94d4a19936fe2ecf77cf0d6/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=130aaSg6jQ6D0JWRbbsuBjo9wfGHWncwizq02hw0oOA";
+
+const UPDATE_LAST_LOCATION_FLOW_URL = "https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/24869f85a83d469d8ad5aaf7d823bbb8/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=e7FX4m0Vt7l0YcO-X5mkApGDshnRZz4vTI3R1ZDMnL4";
+const ADD_ACTION_LOG_ENTRY_URL = "https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/76218c88025a4d478432eb71e4bac8ea/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=PcbBDZ3bWNx2w-j8qDi2uIhUde_XLFbowUObM2qTnSc";
+const GET_ACTION_LOG_URL = "https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/811c65319b91431fa7023b12ece37e32/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=20bR88CZih6rufYlj3t49sW1VSkMkLqfB-wY2lfTTxU";
 const equipmentColumns=["number","name","inventory number","old inventy number","serial number","employee","master","location","validation date","next validation","maintenance date","next maintanence","maintanence frequency","labor intensity in hours","price","price x hours","validation price"];
 const equipmentColumnLabels={"number":"No.","name":"Name","inventory number":"Inventory","old inventy number":"Old inv.","serial number":"Serial","employee":"Employee","master":"Master","location":"Location","validation date":"Validation","next validation":"Next val.","maintenance date":"Maint. date","next maintanence":"Next maint.","maintanence frequency":"Freq.","labor intensity in hours":"Hours","price":"Price","price x hours":"Total","validation price":"Val."};
 let equipment=[];
@@ -486,7 +542,7 @@ let selectedEquipmentRowIndex=null;
 let equipmentColumnFilters={};
 let activeEquipmentFilterColumn=null;
 const months=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-function showSection(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.body.classList.toggle('equipment-mode',id==='equipment');document.body.classList.toggle('planner-mode',id==='planner');if(id==='planner')renderServicePlanner();if(id==='qrlabels')renderQrLabels();const titles={dashboard:['Dashboard','Overview of welding equipment status, service plan and utilisation.'],equipment:['',''],card:['Equipment Card / QR','Object card opened from QR or barcode label.'],planner:['Service Planner','Monthly maintenance plan and monthly approval workflow.'],execution:['Service Execution','Close maintenance tasks and attach reports.'],issues:['Problem Reports','Unplanned repair requests and alerts.'],inventory:['Inventory / RFID Scan','Last confirmed locations and inventory session.'],qrlabels:['QR Labels','Printable QR labels for equipment cards.'],log:['Action Log','Full traceability of all actions.']};document.getElementById('pageTitle').textContent=titles[id][0];document.getElementById('pageSub').textContent=titles[id][1];}
+function showSection(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.body.classList.toggle('equipment-mode',id==='equipment');document.body.classList.toggle('planner-mode',id==='planner');if(id==='planner')renderServicePlanner();if(id==='qrlabels')renderQrLabels();if(id==='log')loadActionLog(false);const titles={dashboard:['Dashboard','Overview of welding equipment status, service plan and utilisation.'],equipment:['',''],card:['Equipment Card / QR','Object card opened from QR or barcode label.'],planner:['Service Planner','Monthly maintenance plan and monthly approval workflow.'],execution:['Service Execution','Close maintenance tasks and attach reports.'],issues:['Problem Reports','Unplanned repair requests and alerts.'],inventory:['Inventory / RFID Scan','Last confirmed locations and inventory session.'],qrlabels:['QR Labels','Printable QR labels for equipment cards.'],log:['Action Log','Full traceability of all actions.']};document.getElementById('pageTitle').textContent=titles[id][0];document.getElementById('pageSub').textContent=titles[id][1];}
 function fakeToast(msg){const t=document.getElementById('toast');if(!t){console.log(msg);return;}t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2300)}
 function safeText(value){return String(value??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
 function cleanValue(value){return value===null||value===undefined?'':String(value).trim()}
@@ -750,6 +806,7 @@ async function submitAddEquipment(event){
     let json={};
     try{json=await res.json()}catch(_){json={success:true}}
     if(json.success===false)throw new Error(json.message||'Flow returned success=false');
+    postActionLogEntry({'date':actionLogDateNow(),'inventory number':data['inventory number'],'action type':'ADD EQUIPMENT','field name':'equipment record','old value':'','new value':data['name']||data['inventory number'],'changed by':localStorage.getItem('mocWeldingLastStatusUser')||'HTML user','source':'Equipment List','comment':'Equipment added to database'});
     setAddEquipmentMessage('Equipment added successfully. Reloading table...','ok');
     await loadEquipmentFromSharePoint();
     setTimeout(closeAddEquipmentModal,650);
@@ -790,6 +847,7 @@ async function deleteSelectedEquipmentRow(){
     let json={};
     try{json=await res.json()}catch(_){json={success:true}}
     if(json.success===false)throw new Error(json.message||'Flow returned success=false');
+    postActionLogEntry({'date':actionLogDateNow(),'inventory number':inv,'action type':'DELETE EQUIPMENT','field name':'equipment record','old value':name||inv,'new value':'deleted','changed by':localStorage.getItem('mocWeldingLastStatusUser')||'HTML user','source':'Equipment List','comment':'Equipment row deleted from database'});
     // Important: if the row was edited before deletion, remove any pending local changes.
     changedEquipmentRows.delete(selectedEquipmentRowIndex);
     changedEquipmentRows.clear();
@@ -1626,6 +1684,9 @@ async function confirmStatusUpdate(){
     if(btn){btn.disabled=true;btn.textContent='Saving...';}
     const res=await fetch(UPDATE_EQUIPMENT_STATUS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     if(!res.ok)throw new Error('HTTP '+res.status+' '+res.statusText);
+    const oldRow=equipmentRows.find(r=>cleanValue(getEquipmentField(r,'inventory number'))===payload['inventory number']);
+    const oldStatus=oldRow?cleanValue(getEquipmentField(oldRow,'status')||getEquipmentField(oldRow,'equipment status')):'';
+    postActionLogEntry({'date':payload['status changed date'],'inventory number':payload['inventory number'],'action type':pendingStatusUpdate.action||'STATUS UPDATE','field name':'status','old value':oldStatus,'new value':payload['status'],'changed by':changedBy,'source':'Equipment Card','comment':comment});
     fakeToast('Equipment status updated in SharePoint.');
     closeStatusUpdateModal();
     await loadEquipmentFromSharePoint();
@@ -1641,17 +1702,116 @@ async function confirmStatusUpdate(){
 
 
 
-const UPDATE_LAST_LOCATION_FLOW_URL="https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/24869f85a83d469d8ad5aaf7d823bbb8/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=e7FX4m0Vt7l0YcO-X5mkApGDshnRZz4vTI3R1ZDMnL4";
+const ACTION_LOG_COLUMNS=['date','inventory number','action type','field name','old value','new value','changed by','source','comment'];
+let actionLogRows=[];
+let actionLogRawText='';
+let actionLogLoading=false;
+let actionLogLoaded=false;
 let gpsLocationPromptShownFor='';
 let gpsLocationCurrentInventory='';
 let gpsLocationUpdateInProgress=false;
+
+function normalizeLogValue(value){
+  return cleanValue(value).replaceAll('|',' ').replace(/\r?\n/g,' ');
+}
+function actionLogDateNow(){
+  return formatLocationDateForFlow(new Date());
+}
+async function postActionLogEntry(entry){
+  try{
+    const payload={
+      'date':normalizeLogValue(entry.date||actionLogDateNow()),
+      'inventory number':normalizeLogValue(entry['inventory number']||entry.inventory||''),
+      'action type':normalizeLogValue(entry['action type']||entry.action||''),
+      'field name':normalizeLogValue(entry['field name']||entry.field||''),
+      'old value':normalizeLogValue(entry['old value']),
+      'new value':normalizeLogValue(entry['new value']),
+      'changed by':normalizeLogValue(entry['changed by']||entry.user||'HTML user'),
+      'source':normalizeLogValue(entry.source||'HTML'),
+      'comment':normalizeLogValue(entry.comment||'')
+    };
+    await fetch(ADD_ACTION_LOG_ENTRY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    actionLogLoaded=false;
+  }catch(e){console.warn('Action log entry was not saved',e);}
+}
+function parseActionLogText(text){
+  text=String(text||'').replace(/^\uFEFF/,'');
+  const rows=[];
+  text.split(/\r?\n/).forEach((line,idx)=>{
+    line=line.trim();
+    if(!line)return;
+    const parts=line.split('|');
+    if(idx===0 && parts[0] && parts[0].toLowerCase()==='date')return;
+    while(parts.length<9)parts.push('');
+    rows.push({date:cleanValue(parts[0]),'inventory number':cleanValue(parts[1]),'action type':cleanValue(parts[2]),'field name':cleanValue(parts[3]),'old value':cleanValue(parts[4]),'new value':cleanValue(parts[5]),'changed by':cleanValue(parts[6]),source:cleanValue(parts[7]),comment:cleanValue(parts.slice(8).join('|'))});
+  });
+  return rows;
+}
+function updateActionLogStatus(text,isError){
+  const el=document.getElementById('actionLogStatus');
+  if(!el)return;
+  el.className='actionLogStatus'+(isError?' error':'');
+  el.textContent=text;
+}
+async function loadActionLog(force){
+  if(actionLogLoading)return;
+  if(actionLogLoaded && !force){renderActionLogTable();return;}
+  actionLogLoading=true;
+  updateActionLogStatus('Loading action log from SharePoint TXT...',false);
+  const tbody=document.querySelector('#logTable tbody');
+  if(tbody)tbody.innerHTML='<tr><td colspan="9" class="subtle">Loading...</td></tr>';
+  try{
+    const res=await fetch(GET_ACTION_LOG_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});
+    if(!res.ok)throw new Error('HTTP '+res.status+' '+res.statusText);
+    let text=await res.text();
+    try{const json=JSON.parse(text);text=json.content||json.fileContent||json.body||json.text||text;}catch(_){}
+    actionLogRawText=String(text||'');
+    actionLogRows=parseActionLogText(actionLogRawText);
+    actionLogLoaded=true;
+    updateActionLogStatus('Loaded '+actionLogRows.length+' log entries.',false);
+    renderActionLogTable();
+    const inv=getCurrentCardInventory();
+    if(inv)renderEquipmentRecentActions(inv);
+  }catch(e){
+    updateActionLogStatus('Could not load action log: '+e.message,true);
+    if(tbody)tbody.innerHTML='<tr><td colspan="9" class="subtle">Could not load action log.</td></tr>';
+  }finally{actionLogLoading=false;}
+}
+function getLogFilterValues(){
+  return {date:cleanValue(document.getElementById('logFilterDate')?.value).toLowerCase(),inventory:cleanValue(document.getElementById('logFilterInventory')?.value).toLowerCase(),action:cleanValue(document.getElementById('logFilterAction')?.value).toLowerCase(),field:cleanValue(document.getElementById('logFilterField')?.value).toLowerCase(),old:cleanValue(document.getElementById('logFilterOld')?.value).toLowerCase(),newv:cleanValue(document.getElementById('logFilterNew')?.value).toLowerCase(),user:cleanValue(document.getElementById('logFilterUser')?.value).toLowerCase(),source:cleanValue(document.getElementById('logFilterSource')?.value).toLowerCase(),comment:cleanValue(document.getElementById('logFilterComment')?.value).toLowerCase()};
+}
+function rowMatchesActionLogFilters(row,f){
+  return (!f.date||row.date.toLowerCase().includes(f.date))&&(!f.inventory||row['inventory number'].toLowerCase().includes(f.inventory))&&(!f.action||row['action type'].toLowerCase().includes(f.action))&&(!f.field||row['field name'].toLowerCase().includes(f.field))&&(!f.old||row['old value'].toLowerCase().includes(f.old))&&(!f.newv||row['new value'].toLowerCase().includes(f.newv))&&(!f.user||row['changed by'].toLowerCase().includes(f.user))&&(!f.source||row.source.toLowerCase().includes(f.source))&&(!f.comment||row.comment.toLowerCase().includes(f.comment));
+}
+function renderActionLogTable(){
+  const tbody=document.querySelector('#logTable tbody');
+  if(!tbody)return;
+  const f=getLogFilterValues();
+  const rows=actionLogRows.filter(r=>rowMatchesActionLogFilters(r,f)).slice().reverse();
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="9" class="subtle">No log entries match current filters.</td></tr>';return;}
+  tbody.innerHTML=rows.map(r=>'<tr><td>'+safeText(r.date)+'</td><td><b>'+safeText(r['inventory number'])+'</b></td><td>'+safeText(r['action type'])+'</td><td>'+safeText(r['field name'])+'</td><td>'+safeText(r['old value'])+'</td><td>'+safeText(r['new value'])+'</td><td>'+safeText(r['changed by'])+'</td><td>'+safeText(r.source)+'</td><td>'+safeText(r.comment)+'</td></tr>').join('');
+}
+function clearLogFilters(){
+  ['logFilterDate','logFilterInventory','logFilterAction','logFilterField','logFilterOld','logFilterNew','logFilterUser','logFilterSource','logFilterComment'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  renderActionLogTable();
+  fakeToast('Log filters cleared');
+}
+function applyLogFilters(){renderActionLogTable();}
+async function renderEquipmentRecentActions(inv){
+  inv=cleanValue(inv);
+  const box=document.getElementById('equipmentRecentActionLog');
+  if(!box||!inv)return;
+  if(!actionLogLoaded){box.innerHTML='<div class="recentActionEmpty">Loading action log...</div>';await loadActionLog(false);}
+  const rows=actionLogRows.filter(r=>cleanValue(r['inventory number']).toLowerCase()===inv.toLowerCase()).slice().reverse().slice(0,8);
+  if(!rows.length){box.innerHTML='<div class="recentActionEmpty">No actions found for this equipment in the log.</div>';return;}
+  box.innerHTML=rows.map(r=>'<div class="recentActionItem"><div class="meta"><span>'+safeText(r.date)+'</span><span>'+safeText(r['action type'])+'</span><span>'+safeText(r['changed by'])+'</span></div><div class="mainLine"><b>'+safeText(r['field name'])+'</b> '+safeText(r['old value']?r['old value']+' → ':'')+safeText(r['new value'])+'</div>'+(r.comment?'<div class="smallHint">'+safeText(r.comment)+'</div>':'')+'</div>').join('');
+}
 
 function isOpenedFromQrCardLink(inv){
   const params=new URLSearchParams(window.location.search);
   const urlInv=getInventoryFromUrl();
   return !!inv && !!urlInv && cleanValue(urlInv)===cleanValue(inv) && (params.get('section')==='card' || !!params.get('inv') || !!params.get('inventory') || !!params.get('equipment'));
 }
-
 function showGpsLocationPromptIfNeeded(inv){
   inv=cleanValue(inv);
   if(!inv)return;
@@ -1668,48 +1828,32 @@ function showGpsLocationPromptIfNeeded(inv){
   if(approve){approve.disabled=false;approve.textContent='Подтвердить / Approve';}
   if(modal)modal.classList.add('active');
 }
-
 function closeGpsLocationModal(){
   if(gpsLocationUpdateInProgress)return;
   const modal=document.getElementById('gpsLocationModal');
   if(modal)modal.classList.remove('active');
 }
-
 function formatLocationDateForFlow(date){
   const d=date||new Date();
   const pad=n=>String(n).padStart(2,'0');
   return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes());
 }
-
 function getPhonePositionForEquipment(){
   return new Promise((resolve,reject)=>{
-    if(!navigator.geolocation){
-      reject(new Error('Geolocation is not supported by this browser.'));
-      return;
-    }
+    if(!navigator.geolocation){reject(new Error('Geolocation is not supported by this browser.'));return;}
     navigator.geolocation.getCurrentPosition(
       pos=>resolve(pos),
-      err=>{
-        let msg='Could not get GPS location.';
-        if(err&&err.code===1)msg='GPS permission was denied by user.';
-        if(err&&err.code===2)msg='GPS position is unavailable.';
-        if(err&&err.code===3)msg='GPS request timed out.';
-        reject(new Error(msg));
-      },
+      err=>{let msg='Could not get GPS location.';if(err&&err.code===1)msg='GPS permission was denied by user.';if(err&&err.code===2)msg='GPS position is unavailable.';if(err&&err.code===3)msg='GPS request timed out.';reject(new Error(msg));},
       {enableHighAccuracy:true,timeout:20000,maximumAge:0}
     );
   });
 }
-
 async function approveGpsLocationUpdate(){
   const inv=cleanValue(gpsLocationCurrentInventory||getInventoryFromUrl());
   const status=document.getElementById('gpsLocationStatus');
   const btn=document.getElementById('approveGpsLocationBtn');
   if(!inv){if(status){status.className='gpsLocationStatus error';status.textContent='Inventory number is missing.';}return;}
-  if(location.protocol!=='https:' && location.protocol!=='http:'){
-    if(status){status.className='gpsLocationStatus error';status.textContent='GPS works reliably only when the page is opened through HTTPS.';}
-    return;
-  }
+  if(location.protocol!=='https:' && location.protocol!=='http:'){if(status){status.className='gpsLocationStatus error';status.textContent='GPS works reliably only when the page is opened through HTTPS.';}return;}
   gpsLocationUpdateInProgress=true;
   if(btn){btn.disabled=true;btn.textContent='Getting GPS...';}
   if(status){status.className='gpsLocationStatus';status.textContent='Requesting phone GPS permission...';}
@@ -1717,31 +1861,19 @@ async function approveGpsLocationUpdate(){
     const pos=await getPhonePositionForEquipment();
     const lat=pos.coords.latitude;
     const lng=pos.coords.longitude;
-    const payload={
-      'inventory number':inv,
-      'last known latitude':lat,
-      'last known longitude':lng,
-      'last location date':formatLocationDateForFlow(new Date())
-    };
+    const payload={'inventory number':inv,'last known latitude':lat,'last known longitude':lng,'last location date':formatLocationDateForFlow(new Date())};
     if(btn)btn.textContent='Saving...';
     if(status)status.textContent='Saving GPS position to SharePoint database...';
     const res=await fetch(UPDATE_LAST_LOCATION_FLOW_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     if(!res.ok)throw new Error('HTTP '+res.status+' '+res.statusText);
     if(status){status.className='gpsLocationStatus success';status.textContent='GPS location saved successfully.';}
+    postActionLogEntry({'date':payload['last location date'],'inventory number':inv,'action type':'GPS UPDATE','field name':'last known location','old value':'','new value':String(lat)+', '+String(lng),'changed by':'QR scan','source':'Equipment Card / QR','comment':'GPS location confirmed'});
     fakeToast('GPS location saved.');
     try{
       const row=equipmentRows.find(r=>cleanValue(getEquipmentField(r,'inventory number'))===inv);
-      if(row){
-        row['last known latitude']=lat;
-        row['last known longitude']=lng;
-        row['last location date']=payload['last location date'];
-        renderEquipmentCard(row);
-      }
+      if(row){row['last known latitude']=lat;row['last known longitude']=lng;row['last location date']=payload['last location date'];renderEquipmentCard(row);}
     }catch(_e){}
-    setTimeout(()=>{
-      gpsLocationUpdateInProgress=false;
-      closeGpsLocationModal();
-    },900);
+    setTimeout(()=>{gpsLocationUpdateInProgress=false;closeGpsLocationModal();},900);
   }catch(e){
     console.error(e);
     if(status){status.className='gpsLocationStatus error';status.textContent=e.message||String(e);}
@@ -1750,7 +1882,6 @@ async function approveGpsLocationUpdate(){
     gpsLocationUpdateInProgress=false;
   }
 }
-
 function formatLastKnownGps(row){
   const lat=cleanValue(getEquipmentField(row,'last known latitude'));
   const lng=cleanValue(getEquipmentField(row,'last known longitude'));
@@ -1759,7 +1890,6 @@ function formatLastKnownGps(row){
   const url='https://www.google.com/maps?q='+encodeURIComponent(lat+','+lng);
   return '<a class="gpsMapLink" href="'+url+'" target="_blank" rel="noopener">Open map</a><div class="smallHint">'+safeText(lat)+', '+safeText(lng)+'</div>';
 }
-
 
 
 function renderEquipmentCard(row){
@@ -1809,6 +1939,7 @@ function renderEquipmentCard(row){
         '<button class="btn danger" onclick="reportProblemFromCard()">Report problem</button>'+
         '<button class="btn secondary" onclick="updateCardWorkStatus(\'Blocked\')">Out of service</button>'+
       '</div>'+
+      '<div class="recentActionLog"><h3>Recent actions</h3><div id="equipmentRecentActionLog" class="recentActionList"><div class="recentActionEmpty">Loading action log...</div></div></div>'+
       '</div>'+
     '</div>';
 
@@ -1828,6 +1959,7 @@ function renderEquipmentCard(row){
     }
   },30);
   setTimeout(()=>showGpsLocationPromptIfNeeded(inv),120);
+  renderEquipmentRecentActions(inv);
 }
 
 
@@ -1901,6 +2033,7 @@ async function saveChangedEquipmentRows(){
     let json={};
     try{json=await res.json()}catch(_){json={success:true}}
     if(json.success===false)throw new Error(json.message||'Flow returned success=false');
+    items.forEach(item=>postActionLogEntry({'date':actionLogDateNow(),'inventory number':item['inventory number'],'action type':'EQUIPMENT DATA UPDATE','field name':'equipment data','old value':'','new value':'row updated','changed by':localStorage.getItem('mocWeldingLastStatusUser')||'HTML user','source':'Equipment List','comment':'Equipment data changed and saved'}));
     changedEquipmentRows.clear();
     equipmentEditMode=false;
     document.body.classList.remove('equipment-editing');
@@ -1919,8 +2052,8 @@ function filterTable(id,q){q=q.toLowerCase();document.querySelectorAll('#'+id+' 
 function selectEquipment(inv){const r=equipment.find(x=>x.inv===inv);if(!r)return;document.getElementById('cardInv').innerHTML='<strong>'+r.inv+'</strong>';document.getElementById('cardOld').textContent=r.old||'-';document.getElementById('cardName').textContent=r.name;document.getElementById('cardLoc').textContent=r.loc;document.getElementById('cardMonth').textContent=months[r.month-1]+' 2026';const st=document.getElementById('cardStatus');st.textContent=r.status;st.className='chip '+(r.status==='Available'?'approved':r.status==='Overdue'?'blocked':r.status==='Under Repair'?'conditional':'planned');showSection('card',document.querySelectorAll('.nav button')[2]);}
 
 function setTrendDepth(btn,depth){document.querySelectorAll('.segmented button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');fakeToast(depth+' trend view selected')}
-function applyLogFilters(){const df=document.getElementById('logDateFrom')?.value||'';const dt=document.getElementById('logDateTo')?.value||'';const eq=document.getElementById('logEquipment')?.value.toLowerCase()||'';const act=document.getElementById('logAction')?.value.toLowerCase()||'';const usr=document.getElementById('logUser')?.value.toLowerCase()||'';document.querySelectorAll('#logTable tbody tr').forEach(tr=>{const cells=tr.children;const d=cells[0].textContent.slice(0,10);const okDate=(!df||d>=df)&&(!dt||d<=dt);const okEq=!eq||cells[1].textContent.toLowerCase()===eq;const okAct=!act||cells[2].textContent.toLowerCase()===act;const okUsr=!usr||cells[3].textContent.toLowerCase()===usr;tr.style.display=(okDate&&okEq&&okAct&&okUsr)?'':'none';});}
-function clearLogFilters(){['logDateFrom','logDateTo','logEquipment','logAction','logUser'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});applyLogFilters();fakeToast('Log filters cleared')}
+function applyLogFilters(){renderActionLogTable();}
+function clearLogFilters(){['logFilterDate','logFilterInventory','logFilterAction','logFilterField','logFilterOld','logFilterNew','logFilterUser','logFilterSource','logFilterComment'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});renderActionLogTable();fakeToast('Log filters cleared')}
 document.addEventListener('DOMContentLoaded',()=>{populateServicePlannerMonths();loadEquipmentFromSharePoint();});
 
 
