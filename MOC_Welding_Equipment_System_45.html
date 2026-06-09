@@ -359,6 +359,12 @@ body.equipment-editing #equipmentTable tr:hover td{background:#fffdf1}
 .certificateButtons .btn.disabledCert{opacity:.45;cursor:not-allowed;pointer-events:none;background:#e2e8f0;color:#64748b;box-shadow:none}
 .certHint{font-size:12px;color:#64748b;margin-top:6px}
 
+
+.cardManualSelector{margin-bottom:16px;display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.cardManualSelector label{display:grid;gap:6px;font-size:13px;color:#475569;font-weight:700}
+.cardManualSelector select{min-width:320px;max-width:100%;border:1px solid #cbd8e6;border-radius:10px;padding:10px 12px;background:white;color:#0f172a}
+.cardManualSelector .smallHint{max-width:560px}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -378,7 +384,17 @@ body.equipment-editing #equipmentTable tr:hover td{background:#fffdf1}
 </div>
 
 <div id="equipmentLoadStatus" class="equipmentLoadStatus">Loading equipment data...</div><div class="equipmentToolbarActions"><input id="equipmentSearch" placeholder="Search by inventory number, name, serial number..." oninput="renderEquipmentTable()"><button class="btn secondary" onclick="loadEquipmentFromSharePoint()">Reload data</button><button id="equipmentEditSaveBtn" class="btn secondary" onclick="toggleEquipmentEditMode()">Change data / Save data</button><button id="deleteEquipmentBtn" class="btn secondary" onclick="deleteSelectedEquipmentRow()" disabled>Delete row</button><button class="btn" onclick="openAddEquipmentModal()">+ Add equipment</button></div></div><div id="equipmentError" class="equipmentError"></div><div class="equipmentTableWrap"><table id="equipmentTable"><thead id="equipmentTableHead"><tr><th>Loading...</th></tr></thead><tbody id="equipmentTableBody"><tr><td class="subtle">Loading data from SharePoint...</td></tr></tbody></table></div></div></section>
-<section id="card" class="section"><div class="grid"><div class="card span8"><div class="cardHero"><div><div class="equipmentPhoto">⚡</div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn green" onclick="fakeToast('Equipment taken into work')">Take into work</button><button class="btn secondary" onclick="fakeToast('Manual opened')">Manual</button></div></div><div><h2 id="cardName">Lincoln Speedtec 405S+PF46</h2><table><tbody><tr><td>Equipment ID</td><td id="cardInv"><strong>1723-00003</strong></td></tr><tr><td>Old inventory</td><td id="cardOld">218237</td></tr><tr><td>Status</td><td><span id="cardStatus" class="chip approved">Available</span></td></tr><tr><td>Location</td><td id="cardLoc">Welding hall A</td></tr><tr><td>Last service</td><td>2025-01-12</td></tr><tr><td>Next service</td><td id="cardMonth">Jan 2026</td></tr><tr><td>Documents</td><td><button class="btn secondary" onclick="fakeToast('Manual link placeholder')">Manual</button> <button class="btn secondary" onclick="fakeToast('Certificates archive placeholder')">Certificates</button></td></tr></tbody></table><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn" onclick="fakeToast('Return recorded')">Return after work</button><button class="btn danger" onclick="fakeToast('Problem report created and emails prepared')">Report problem</button><button class="btn secondary" onclick="fakeToast('Out of service request recorded')">Out of service</button></div></div></div></div><div class="card span4"><h2>QR / Barcode</h2><div class="equipmentCardQrOnly"><div class="qrbox"></div></div></div><div class="card span12"><h2>Recent history for selected unit</h2><p class="subtle">Latest actions from TXT log for this selected equipment only.</p><div id="equipmentHistoryActionLog" class="recentActionList"><div class="recentActionEmpty">Open an equipment card to load history.</div></div></div></div></section>
+<section id="card" class="section">
+  <div class="cardManualSelector">
+    <label>Manual equipment selection by ID number
+      <select id="manualCardEquipmentSelect" onchange="openManualEquipmentCard()">
+        <option value="">Loading equipment...</option>
+      </select>
+    </label>
+    <button class="btn secondary" type="button" onclick="populateManualCardSelector();openManualEquipmentCard()">Open selected card</button>
+    <div class="smallHint">For testing: choose equipment manually without changing QR links or GitHub URL.</div>
+  </div>
+  <div class="grid"><div class="card span8"><div class="cardHero"><div><div class="equipmentPhoto">⚡</div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn green" onclick="fakeToast('Equipment taken into work')">Take into work</button><button class="btn secondary" onclick="fakeToast('Manual opened')">Manual</button></div></div><div><h2 id="cardName">Lincoln Speedtec 405S+PF46</h2><table><tbody><tr><td>Equipment ID</td><td id="cardInv"><strong>1723-00003</strong></td></tr><tr><td>Old inventory</td><td id="cardOld">218237</td></tr><tr><td>Status</td><td><span id="cardStatus" class="chip approved">Available</span></td></tr><tr><td>Location</td><td id="cardLoc">Welding hall A</td></tr><tr><td>Last service</td><td>2025-01-12</td></tr><tr><td>Next service</td><td id="cardMonth">Jan 2026</td></tr><tr><td>Documents</td><td><button class="btn secondary" onclick="fakeToast('Manual link placeholder')">Manual</button> <button class="btn secondary" onclick="fakeToast('Certificates archive placeholder')">Certificates</button></td></tr></tbody></table><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn" onclick="fakeToast('Return recorded')">Return after work</button><button class="btn danger" onclick="fakeToast('Problem report created and emails prepared')">Report problem</button><button class="btn secondary" onclick="fakeToast('Out of service request recorded')">Out of service</button></div></div></div></div><div class="card span4"><h2>QR / Barcode</h2><div class="equipmentCardQrOnly"><div class="qrbox"></div></div></div><div class="card span12"><h2>Recent history for selected unit</h2><p class="subtle">Latest actions from TXT log for this selected equipment only.</p><div id="equipmentHistoryActionLog" class="recentActionList"><div class="recentActionEmpty">Open an equipment card to load history.</div></div></div></div></section>
 <section id="planner" class="section">
   <div class="grid">
     <div class="card span12">
@@ -617,7 +633,7 @@ let selectedEquipmentRowIndex=null;
 let equipmentColumnFilters={};
 let activeEquipmentFilterColumn=null;
 const months=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-function showSection(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.body.classList.toggle('equipment-mode',id==='equipment');document.body.classList.toggle('planner-mode',id==='planner');if(id==='planner')renderServicePlanner();if(id==='qrlabels')renderQrLabels();if(id==='log')loadActionLog(false);if(id==='execution')renderServiceExecution();const titles={dashboard:['Dashboard','Overview of welding equipment status, service plan and utilisation.'],equipment:['',''],card:['Equipment Card / QR','Object card opened from QR or barcode label.'],planner:['Service Planner','Monthly maintenance plan and monthly approval workflow.'],execution:['Service Execution','Close maintenance tasks and attach reports.'],issues:['Problem Reports','Unplanned repair requests and alerts.'],inventory:['Inventory / RFID Scan','Last confirmed locations and inventory session.'],qrlabels:['QR Labels','Printable QR labels for equipment cards.'],log:['Action Log','Full traceability of all actions.']};document.getElementById('pageTitle').textContent=titles[id][0];document.getElementById('pageSub').textContent=titles[id][1];}
+function showSection(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.body.classList.toggle('equipment-mode',id==='equipment');document.body.classList.toggle('planner-mode',id==='planner');if(id==='planner')renderServicePlanner();if(id==='qrlabels')renderQrLabels();if(id==='log')loadActionLog(false);if(id==='execution')renderServiceExecution();if(id==='card')populateManualCardSelector();const titles={dashboard:['Dashboard','Overview of welding equipment status, service plan and utilisation.'],equipment:['',''],card:['Equipment Card / QR','Object card opened from QR or barcode label.'],planner:['Service Planner','Monthly maintenance plan and monthly approval workflow.'],execution:['Service Execution','Close maintenance tasks and attach reports.'],issues:['Problem Reports','Unplanned repair requests and alerts.'],inventory:['Inventory / RFID Scan','Last confirmed locations and inventory session.'],qrlabels:['QR Labels','Printable QR labels for equipment cards.'],log:['Action Log','Full traceability of all actions.']};document.getElementById('pageTitle').textContent=titles[id][0];document.getElementById('pageSub').textContent=titles[id][1];}
 function fakeToast(msg){const t=document.getElementById('toast');if(!t){console.log(msg);return;}t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2300)}
 function safeText(value){return String(value??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
 function cleanValue(value){return value===null||value===undefined?'':String(value).trim()}
@@ -668,7 +684,7 @@ function displayEquipmentValue(col,value){if(['validation date','next validation
 function getMaintenanceStatus(row){const next=excelDateToText(getEquipmentField(row,'next maintanence'));if(!next)return 'Available';const today=new Date().toISOString().slice(0,10);return next<today?'Overdue':'Available'}
 function monthFromDateText(value){const txt=excelDateToText(value);if(!/^\d{4}-\d{2}-\d{2}$/.test(txt))return 1;return Number(txt.slice(5,7))||1}
 function mapEquipmentRows(rows){equipmentRows=(Array.isArray(rows)?rows:[]).map(normalizeRowKeys);equipment=equipmentRows.map((r,i)=>({no:cleanValue(getEquipmentField(r,'number'))||i+1,inv:cleanValue(getEquipmentField(r,'inventory number')),name:cleanValue(getEquipmentField(r,'name')),old:cleanValue(getEquipmentField(r,'old inventy number')),month:monthFromDateText(getEquipmentField(r,'next maintanence')||getEquipmentField(r,'next validation')),freq:cleanValue(getEquipmentField(r,'maintanence frequency')),hours:cleanValue(getEquipmentField(r,'labor intensity in hours')),cost:cleanValue(getEquipmentField(r,'price x hours')||getEquipmentField(r,'price')),status:getMaintenanceStatus(r),loc:cleanValue(getEquipmentField(r,'location'))}));}
-async function loadEquipmentFromSharePoint(){const st=document.getElementById('equipmentLoadStatus');const err=document.getElementById('equipmentError');const body=document.getElementById('equipmentTableBody');if(st)st.textContent='Loading equipment data from SharePoint...';if(err){err.style.display='none';err.textContent=''}if(body)body.innerHTML='<tr><td class="subtle">Loading data from SharePoint...</td></tr>';try{const res=await fetch(GET_EQUIPMENT_LIST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});if(!res.ok)throw new Error('HTTP '+res.status+' '+res.statusText);const json=await res.json();const rows=Array.isArray(json)?json:(json.data||[]);mapEquipmentRows(rows);changedEquipmentRows.clear();selectedEquipmentRowIndex=null;renderEquipmentTable();populateServicePlannerMonths();if(document.getElementById('planner')?.classList.contains('active'))renderServicePlanner();if(document.getElementById('qrlabels')?.classList.contains('active'))renderQrLabels();if(document.getElementById('execution')?.classList.contains('active'))renderServiceExecution();openEquipmentCardFromUrl();setTimeout(openEquipmentCardFromUrl,500);setTimeout(openEquipmentCardFromUrl,1500);if(st)st.textContent='Loaded from SharePoint: '+equipmentRows.length+' records';}catch(e){if(st)st.textContent='Loading failed';if(err){err.style.display='block';err.innerHTML='<strong>Could not load data from SharePoint.</strong><br>'+safeText(e.message)+'<br><br>Check Flow response headers: Content-Type = application/json and Access-Control-Allow-Origin = *';}if(body)body.innerHTML='<tr><td class="subtle">No data loaded.</td></tr>';}}
+async function loadEquipmentFromSharePoint(){const st=document.getElementById('equipmentLoadStatus');const err=document.getElementById('equipmentError');const body=document.getElementById('equipmentTableBody');if(st)st.textContent='Loading equipment data from SharePoint...';if(err){err.style.display='none';err.textContent=''}if(body)body.innerHTML='<tr><td class="subtle">Loading data from SharePoint...</td></tr>';try{const res=await fetch(GET_EQUIPMENT_LIST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});if(!res.ok)throw new Error('HTTP '+res.status+' '+res.statusText);const json=await res.json();const rows=Array.isArray(json)?json:(json.data||[]);mapEquipmentRows(rows);changedEquipmentRows.clear();selectedEquipmentRowIndex=null;renderEquipmentTable();populateServicePlannerMonths();if(document.getElementById('planner')?.classList.contains('active'))renderServicePlanner();if(document.getElementById('qrlabels')?.classList.contains('active'))renderQrLabels();if(document.getElementById('execution')?.classList.contains('active'))renderServiceExecution();if(document.getElementById('card')?.classList.contains('active'))populateManualCardSelector();openEquipmentCardFromUrl();setTimeout(openEquipmentCardFromUrl,500);setTimeout(openEquipmentCardFromUrl,1500);if(st)st.textContent='Loaded from SharePoint: '+equipmentRows.length+' records';}catch(e){if(st)st.textContent='Loading failed';if(err){err.style.display='block';err.innerHTML='<strong>Could not load data from SharePoint.</strong><br>'+safeText(e.message)+'<br><br>Check Flow response headers: Content-Type = application/json and Access-Control-Allow-Origin = *';}if(body)body.innerHTML='<tr><td class="subtle">No data loaded.</td></tr>';}}
 function rowPassesEquipmentFilters(row){
   return equipmentColumns.every(col=>{
     const selected=equipmentColumnFilters[col];
@@ -1968,20 +1984,49 @@ function formatLastKnownGps(row){
 
 
 
-const SHAREPOINT_CERTIFICATE_BASE_URL='https://ee.blrt.eu/sites/ee131';
+const SHAREPOINT_CERTIFICATE_SITE_HOST='https://blrt.sharepoint.com';
+const SHAREPOINT_CERTIFICATE_SITE_PATH='/sites/ee131';
 
 function cleanCertificatePath(value){
   return cleanValue(value).replace(/^#+\s*/,'').trim();
 }
+function encodeSharePointPath(path){
+  return path.split('/').map((part,i)=>i===0?'':encodeURIComponent(part)).join('/');
+}
 function sharePointPathToUrl(value){
   let path=cleanCertificatePath(value);
   if(!path)return '';
-  if(/^https?:\/\//i.test(path))return path;
+
+  // If Flow starts saving normal SharePoint sharing links later, open them as-is.
+  if(/^https?:\/\//i.test(path) && (path.includes('/:') || path.includes('/_layouts/') || path.includes('?'))){
+    return path;
+  }
+
   path=path.replace(/\\/g,'/');
   if(!path.startsWith('/'))path='/'+path;
-  const encoded=path.split('/').map((part,i)=>i===0?'':encodeURIComponent(part)).join('/');
-  if(path.toLowerCase().startsWith('/sites/'))return 'https://ee.blrt.eu'+encoded;
-  return SHAREPOINT_CERTIFICATE_BASE_URL+encoded;
+
+  // The value stored by Power Automate is library-relative:
+  // /EquipmentAndMaintenance/05_Register/.../file.pdf
+  // Convert it to the SharePoint document preview URL, similar to Copy link format.
+  let filePath=path;
+  if(/^https?:\/\//i.test(filePath)){
+    try{
+      const u=new URL(filePath);
+      filePath=u.pathname;
+      if(filePath.toLowerCase().startsWith(SHAREPOINT_CERTIFICATE_SITE_PATH.toLowerCase())){
+        filePath=filePath.slice(SHAREPOINT_CERTIFICATE_SITE_PATH.length);
+      }
+    }catch(_){}
+  }
+  if(filePath.toLowerCase().startsWith(SHAREPOINT_CERTIFICATE_SITE_PATH.toLowerCase())){
+    filePath=filePath.slice(SHAREPOINT_CERTIFICATE_SITE_PATH.length);
+  }
+  if(!filePath.startsWith('/'))filePath='/'+filePath;
+
+  const encodedFilePath=encodeSharePointPath(SHAREPOINT_CERTIFICATE_SITE_PATH+filePath);
+  const extension=(filePath.split('.').pop()||'').toLowerCase();
+  const prefix=extension==='pdf' ? '/:b:/r' : '/:u:/r';
+  return SHAREPOINT_CERTIFICATE_SITE_HOST+prefix+encodedFilePath+'?csf=1&web=1';
 }
 function getCertificateField(row,type){
   if(type==='maintenance'){
@@ -2013,6 +2058,34 @@ function certificateButtonsHtml(row){
     certificateButtonHtml(row,'validation','Validation certificate')+
     certificateButtonHtml(row,'repair','Repair certificate')+
   '</div><div class="certHint">Buttons open the latest certificate paths saved in SharePoint database.</div>';
+}
+
+
+
+function populateManualCardSelector(){
+  const sel=document.getElementById('manualCardEquipmentSelect');
+  if(!sel)return;
+  const current=sel.value || cleanValue(getCurrentCardInventory()) || cleanValue(getInventoryFromUrl());
+  const rows=equipmentRows.slice().sort((a,b)=>cleanValue(getEquipmentField(a,'inventory number')).localeCompare(cleanValue(getEquipmentField(b,'inventory number'))));
+  sel.innerHTML='<option value="">Select ID number...</option>'+rows.map(row=>{
+    const inv=cleanValue(getEquipmentField(row,'inventory number'));
+    const name=cleanValue(getEquipmentField(row,'name'));
+    return '<option value="'+safeText(inv)+'">'+safeText(inv+(name?' - '+name:''))+'</option>';
+  }).join('');
+  if(current && rows.some(row=>cleanValue(getEquipmentField(row,'inventory number'))===current))sel.value=current;
+}
+function openManualEquipmentCard(){
+  const inv=cleanValue(document.getElementById('manualCardEquipmentSelect')?.value);
+  if(!inv){fakeToast('Select ID number first.');return;}
+  const row=equipmentRows.find(r=>cleanValue(getEquipmentField(r,'inventory number'))===inv);
+  if(!row){fakeToast('Selected equipment was not found in loaded database.');return;}
+  renderEquipmentCard(row);
+  try{
+    const url=new URL(window.location.href);
+    url.searchParams.set('section','card');
+    url.searchParams.set('inv',inv);
+    window.history.replaceState({},'',url.toString());
+  }catch(_){}
 }
 
 
@@ -2083,6 +2156,8 @@ function renderEquipmentCard(row){
     }
   },30);
   setTimeout(()=>showGpsLocationPromptIfNeeded(inv),120);
+  const manualSel=document.getElementById('manualCardEquipmentSelect');
+  if(manualSel){if(!manualSel.options.length||manualSel.options.length===1)populateManualCardSelector();manualSel.value=inv;}
   renderEquipmentRecentActions(inv);
 }
 
