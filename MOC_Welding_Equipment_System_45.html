@@ -365,18 +365,162 @@ body.equipment-editing #equipmentTable tr:hover td{background:#fffdf1}
 .cardManualSelector select{min-width:320px;max-width:100%;border:1px solid #cbd8e6;border-radius:10px;padding:10px 12px;background:white;color:#0f172a}
 .cardManualSelector .smallHint{max-width:560px}
 
+
+.inventoryStatsTable td:last-child{text-align:right;font-weight:900;color:#0f172a}
+.inventoryScanStatus{margin-top:12px;font-size:13px;color:#64748b;line-height:1.4}
+.inventoryScanStatus.error{color:#b91c1c}
+.inventoryScanStatus.ok{color:#166534}
+.inventoryScanTools{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.inventoryMissingList{margin-top:14px;border-top:1px solid #e5edf6;padding-top:12px;max-height:280px;overflow:auto}
+.inventoryMissingItem{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid #e5edf6;border-radius:12px;background:#f8fafc;padding:9px 10px;margin-bottom:8px;font-size:13px}
+.inventoryMissingItem b{color:#0f172a}
+.inventoryMissingItem small{display:block;color:#64748b;margin-top:2px}
+.inventoryScanModal{position:fixed;inset:0;z-index:10010;background:rgba(15,23,42,.72);display:none;align-items:center;justify-content:center;padding:18px}
+.inventoryScanModal.active{display:flex}
+.inventoryScanDialog{width:min(760px,96vw);background:#fff;border-radius:18px;box-shadow:0 25px 80px rgba(15,23,42,.45);overflow:hidden}
+.inventoryScanHeader{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid #e5edf6}
+.inventoryScanHeader h2{margin:0;font-size:20px}
+.inventoryScanBody{padding:16px 20px}
+.inventoryVideoWrap{position:relative;background:#0f172a;border-radius:14px;overflow:hidden;min-height:260px}
+#inventoryQrVideo{width:100%;max-height:430px;display:block;background:#0f172a}
+.scanFrame{position:absolute;left:50%;top:50%;width:240px;height:240px;transform:translate(-50%,-50%);border:3px solid rgba(255,255,255,.85);border-radius:18px;box-shadow:0 0 0 9999px rgba(15,23,42,.35)}
+.inventoryManualScan{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.inventoryManualScan input{flex:1;min-width:220px;border:1px solid #cbd8e6;border-radius:10px;padding:10px 12px}
+.inventoryScanActions{display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;background:#f8fafc;border-top:1px solid #e5edf6;flex-wrap:wrap}
+.inventoryMapMarker{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#c93d37;box-shadow:0 4px 15px rgba(201,61,55,.35);display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:12px;border:2px solid white}
+.inventoryMapMarker span{transform:rotate(45deg)}
+.inventoryMapLabel{position:absolute;min-width:145px;background:white;border-radius:12px;padding:8px 10px;box-shadow:0 8px 22px rgba(15,23,42,.16);font-size:12px;color:#334155}
+.inventoryMapLabel strong{display:block;color:#0b4f86;margin-bottom:3px}
+
+
+.leafletMap{height:410px;width:100%;border-radius:14px;border:1px solid #d7e2ef;overflow:hidden;background:#e5edf6}
+.leafletMap .leaflet-control-attribution{font-size:10px}
+.mapFallback{padding:14px;border:1px dashed #cbd5e1;border-radius:12px;background:#f8fafc;color:#64748b;font-size:13px}
+.inventoryMapPopup b,.serviceMapPopup b{color:#0b4f86}
+
+
+.dashboardMetricGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.dashboardPlanChart{height:260px;border-left:1px solid #d7e2ef;border-bottom:1px solid #d7e2ef;display:flex;align-items:flex-end;gap:12px;padding:16px 12px 34px;position:relative;overflow:hidden}
+.dashboardPlanChart .moneyBar{flex:1;min-width:38px;max-width:78px;background:linear-gradient(180deg,#0b74ad,#104f86);border-radius:9px 9px 0 0;color:white;font-weight:900;text-align:center;font-size:12px;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;position:relative}
+.dashboardPlanChart .moneyBar span{position:absolute;bottom:-26px;color:#64748b;font-size:12px;font-weight:800;left:50%;transform:translateX(-50%)}
+.dashboardPlanChart .todayLine{position:absolute;top:0;bottom:0;width:2px;background:#c93d37;box-shadow:0 0 0 3px rgba(201,61,55,.10)}
+.dashboardPlanChart .todayLine:before{content:'Today';position:absolute;top:6px;left:6px;background:#c93d37;color:white;border-radius:8px;padding:3px 6px;font-size:11px;font-weight:900}
+.dashboardPlanTableWrap{max-height:330px;overflow:auto;border:1px solid #e5edf6;border-radius:14px}
+.dashboardMonthPlanMap{height:360px;margin-top:14px;display:none}
+.dashboardMonthPlanMap.active{display:block}
+.statusBarList{display:grid;gap:10px}
+.statusBarRow{display:grid;grid-template-columns:160px 1fr 44px;gap:10px;align-items:center;font-size:14px}
+.statusBarTrack{height:10px;background:#e8eef5;border-radius:99px;overflow:hidden}
+.statusBarFill{height:100%;border-radius:99px;background:#0b74ad}
+.statusBarFill.green{background:#20915d}.statusBarFill.blue{background:#0b74ad}.statusBarFill.yellow{background:#e1a100}.statusBarFill.red{background:#c93d37}
+.familyList{display:grid;gap:12px}
+.familyRow{display:grid;grid-template-columns:100px 1fr 40px;gap:10px;align-items:center}
+.familyTrack{height:9px;background:#e8eef5;border-radius:99px;overflow:hidden}
+.familyFill{height:100%;background:linear-gradient(90deg,#0b74ad,#20915d);border-radius:99px}
+.dashboardInlineActions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+
+body.auth-required .app{user-select:none}
+.accessModal{pointer-events:auto;position:fixed;inset:0;z-index:20000;background:linear-gradient(135deg,rgba(15,23,42,.86),rgba(15,23,42,.68));display:none;align-items:center;justify-content:center;padding:24px}
+body.auth-required .accessModal{display:flex}
+.accessDialog{width:min(460px,94vw);background:#fff;border-radius:22px;box-shadow:0 28px 100px rgba(0,0,0,.45);overflow:hidden}
+.accessHeader{padding:22px 24px;border-bottom:1px solid #e5edf6}
+.accessHeader h2{margin:0;color:#0f172a;font-size:24px}
+.accessHeader p{margin:8px 0 0;color:#64748b;font-size:14px;line-height:1.4}
+.accessBody{padding:22px 24px;display:grid;gap:12px}
+.accessBody label{display:grid;gap:7px;font-weight:800;color:#334155}
+.accessBody input{border:1px solid #cbd8e6;border-radius:12px;padding:12px 14px;font-size:16px}
+.accessActions{display:flex;justify-content:flex-end;gap:10px;padding:16px 24px;background:#f8fafc;border-top:1px solid #e5edf6}
+.accessError{font-size:13px;color:#b91c1c;min-height:18px}
+.accessUserBox{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.accessRoleChip{background:#e8f1fb;color:#104f86;border-radius:999px;padding:7px 10px;font-weight:900;font-size:12px}
+.accessLocked{display:none!important}
+.accessDisabled{opacity:.45!important;pointer-events:none!important;filter:grayscale(.5)}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 </head>
-<body>
+<body class="auth-required">
 <div class="app"><aside class="sidebar"><div class="logo"><img class="logoImg" src="data:image/png;base64,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" alt="MOC logo" /><div class="logoText"><strong>MOC Welding Equipment</strong><span>Maintenance & Utilisation System</span></div></div><nav class="nav">
 <button class="active" onclick="showSection('dashboard',this)"><span class="icon">▣</span> Dashboard</button><button onclick="showSection('equipment',this)"><span class="icon">▤</span> Equipment List</button><button onclick="showSection('card',this)"><span class="icon">▥</span> Equipment Card / QR</button><button onclick="showSection('planner',this)"><span class="icon">▦</span> Service Planner</button><button onclick="showSection('execution',this)"><span class="icon">✓</span> Service Execution</button><button onclick="showSection('issues',this)"><span class="icon">!</span> Problem Reports</button><button onclick="showSection('inventory',this)"><span class="icon">⌖</span> Inventory / RFID Scan</button>
 <button onclick="showSection('qrlabels',this)"><span>▣</span> QR Labels</button><button onclick="showSection('log',this)"><span class="icon">↺</span> Action Log</button>
 </nav></aside><main class="main">
-<div class="topbar"><div class="title"><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Overview of welding equipment status, service plan and utilisation.</p></div><div class="actions"></div></div>
-<section id="dashboard" class="section active"><div class="grid"><div class="card span3 metric"><div><div class="num">145</div><div class="label">Equipment in register</div></div><span class="chip approved">Excel import</span></div><div class="card span3 metric"><div><div class="num">580</div><div class="label">Annual service hours</div></div><span class="chip planned">Plan</span></div><div class="card span3 metric"><div><div class="num">17,325</div><div class="label">Annual cost, EUR</div></div><span class="chip planned">Contract</span></div><div class="card span3 metric"><div><div class="num">12</div><div class="label">Open issues / overdue</div></div><span class="chip blocked">Demo KPI</span></div><div class="card span8"><div class="toolbar"><div><h2>Service plan by period</h2><p class="subtle">Switch view depth and choose the period for management review.</p></div><div class="segmented"><button onclick="setTrendDepth(this,'Daily')">Daily</button><button class="active" onclick="setTrendDepth(this,'Monthly')">Monthly</button><button onclick="setTrendDepth(this,'Yearly')">Yearly</button></div></div><div class="controlRow"><div class="periodBox"><label>From <input type="date" value="2026-01-01"></label><label>To <input type="date" value="2026-12-31"></label></div><button class="btn secondary" onclick="fakeToast('Dashboard period applied')">Apply period</button></div><div class="barChart"><div class="vbar" style="height:82px">13<span>Jan</span></div><div class="vbar" style="height:78px">12<span>Feb</span></div><div class="vbar" style="height:78px">12<span>Mar</span></div><div class="vbar" style="height:78px">12<span>Apr</span></div><div class="vbar" style="height:78px">12<span>May</span></div><div class="vbar" style="height:78px">12<span>Jun</span></div><div class="vbar" style="height:78px">12<span>Jul</span></div><div class="vbar" style="height:78px">12<span>Aug</span></div><div class="vbar" style="height:78px">12<span>Sep</span></div><div class="vbar" style="height:78px">12<span>Oct</span></div><div class="vbar" style="height:78px">12<span>Nov</span></div><div class="vbar" style="height:78px">12<span>Dec</span></div></div><div class="chartNote">Demo distribution is used because month cells in the source file are not filled yet.</div></div><div class="card span4"><h2>Equipment families</h2><p class="subtle">Parsed from names in the Excel list.</p><div class="sparkRow"><div>Lincoln</div><div class="progress"><div class="bar" style="width:41%"></div></div><strong>60</strong></div><div class="sparkRow"><div>Other</div><div class="progress"><div class="bar" style="width:24%"></div></div><strong>35</strong></div><div class="sparkRow"><div>Fronius</div><div class="progress"><div class="bar" style="width:18%"></div></div><strong>26</strong></div><div class="sparkRow"><div>Kemppi</div><div class="progress"><div class="bar" style="width:16%"></div></div><strong>23</strong></div><div class="sparkRow"><div>Plasma</div><div class="progress"><div class="bar" style="width:1%"></div></div><strong>1</strong></div></div><div class="card span7"><h2>Operational status</h2><div class="donutWrap"><div class="donut"></div><div class="legend"><div class="legendItem"><span class="dot green"></span> Available / ready for work</div><div class="legendItem"><span class="dot blue"></span> In use / service due</div><div class="legendItem"><span class="dot yellow"></span> Conserved / under service</div><div class="legendItem"><span class="dot red"></span> Overdue / repair required</div></div></div></div><div class="card span5"><h2>Management focus</h2><table><tbody><tr><td>Most used unit</td><td><strong>1723-00144</strong></td></tr><tr><td>Highest repair risk</td><td><strong>Fronius / demo</strong></td></tr><tr><td>Units to consider for conservation</td><td><strong>18</strong></td></tr><tr><td>Monthly average service cost</td><td><strong>1,443.72 EUR</strong></td></tr></tbody></table></div></div></section>
+<div class="topbar"><div class="title"><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Overview of welding equipment status, service plan and utilisation.</p></div><div class="actions"><div id="accessUserBox" class="accessUserBox" style="display:none"><span id="accessUserName" class="accessRoleChip">Not logged in</span><button class="btn secondary" onclick="logoutAccess()">Logout</button></div></div></div>
+<section id="dashboard" class="section active">
+  <div class="grid">
+    <div class="span12 dashboardMetricGrid">
+      <div class="card metric">
+        <div><div class="num" id="dashboardRegisterCount">0</div><div class="label">Equipment in register</div></div>
+        <span class="chip approved">DB</span>
+      </div>
+      <div class="card metric">
+        <div><div class="num" id="dashboardAnnualCost">0</div><div class="label">Annual service cost, EUR</div></div>
+        <span class="chip planned">Plan</span>
+      </div>
+      <div class="card metric">
+        <div><div class="num" id="dashboardOpenIssues">0</div><div class="label">Open issues / overdue</div></div>
+        <span class="chip blocked">Risk</span>
+      </div>
+    </div>
+
+    <div class="card span8">
+      <div class="toolbar">
+        <div>
+          <h2>Service plan by period</h2>
+          <p class="subtle">Monthly planned cost from maintenance and validation due dates. Warehouse / conserved units are excluded.</p>
+        </div>
+
+      </div>
+      <div class="controlRow">
+        <div class="periodBox">
+          <label>From <input id="dashboardPlanFrom" type="date"></label>
+          <label>To <input id="dashboardPlanTo" type="date"></label>
+        </div>
+        <button class="btn secondary" onclick="renderDashboard()">Apply period</button>
+      </div>
+      <div id="dashboardPlanChart" class="dashboardPlanChart"></div>
+      <div id="dashboardPlanNote" class="chartNote"></div>
+    </div>
+
+    <div class="card span4">
+      <h2>Equipment families</h2>
+      <p class="subtle">Grouped from equipment names by key words.</p>
+      <div id="dashboardFamilies" class="familyList"></div>
+    </div>
+
+    <div class="card span5">
+      <h2>Operational status</h2>
+      <p class="subtle">Calculated from DB status, location and due dates.</p>
+      <div id="dashboardOperationalStatus" class="statusBarList"></div>
+    </div>
+
+    <div class="card span7">
+      <div class="toolbar">
+        <div>
+          <h2>Current month plan</h2>
+          <p class="subtle">Maintenance and validation due this month.</p>
+        </div>
+        <div class="dashboardInlineActions">
+          <button class="btn secondary" onclick="toggleDashboardMonthMap()">Show on map</button>
+          <button class="btn secondary" onclick="renderDashboard()">Refresh</button>
+        </div>
+      </div>
+      <div class="dashboardPlanTableWrap">
+        <table>
+          <thead><tr><th>Inventory number</th><th>Type</th><th>Expired date</th><th>Master</th></tr></thead>
+          <tbody id="dashboardCurrentMonthPlan"><tr><td colspan="4" class="subtle">Loading...</td></tr></tbody>
+        </table>
+      </div>
+      <div id="dashboardMonthPlanMap" class="leafletMap dashboardMonthPlanMap"></div>
+    </div>
+  </div>
+</section>
 <section id="equipment" class="section"><div class="card"><div class="equipmentToolbar">
 <div class="equipmentPageHeader">
   <h2>Equipment List</h2>
@@ -482,16 +626,38 @@ body.equipment-editing #equipmentTable tr:hover td{background:#fffdf1}
     </div>
     <div class="card span7">
       <h2>Last confirmed location</h2>
-      <div id="serviceLocationMap" class="googleMap">
-        <iframe id="serviceMapFrame" loading="lazy" src="https://www.google.com/maps?q=Kopli%20103%20Tallinn&output=embed"></iframe>
-        <div class="mapShade"></div>
-        <div id="serviceMapMarker" class="mapMarker blue" style="left:52%;top:46%;display:none"><span>1</span></div>
-        <div id="serviceMapLabel" class="mapLabel" style="left:56%;top:38%;display:none"></div>
-      </div>
+      <div id="serviceLocationMap" class="leafletMap"></div>
       <div id="serviceMapInfo" class="serviceMapInfo">Select equipment to show last known GPS position from database.</div>
     </div>
   </div>
-</section><section id="issues" class="section"><div class="grid"><div class="card span8"><h2>Problem Reports</h2><table><thead><tr><th>Equipment</th><th>Problem</th><th>Location</th><th>Priority</th><th>Status</th></tr></thead><tbody><tr><td>1723-00033</td><td>Wire feed problem</td><td>Welding hall A</td><td><span class='chip blocked'>High</span></td><td>Open</td></tr><tr><td>1723-00111</td><td>Cooling leakage suspected</td><td>Repair zone</td><td><span class='chip conditional'>Medium</span></td><td>Assigned</td></tr><tr><td>1723-00076</td><td>Damaged torch connector</td><td>Assembly area</td><td><span class='chip conditional'>Medium</span></td><td>Open</td></tr></tbody></table></div><div class="card span4"><h2>Report problem form</h2><div class="selectedUnit"><strong>Selected equipment for alert:</strong><br>1723-00033 — Fronius TPS2700<br><span class="subtle">Notification will be linked to this unit card and sent to manager, repairman and master.</span></div><div class="formGrid"><label class="full">Equipment<select><option>1723-00033 - Fronius TPS2700</option><option>1723-00003 - Lincoln Speedtec</option><option>1723-00111 - Lincoln Speedtec 500S</option></select></label><label class="full">Problem type<select><option>Electrical issue</option><option>Wire feed problem</option><option>Cooling leak</option><option>Damaged cable / torch</option></select></label><label class="full">Description<textarea>Describe what happened and attach photo if needed.</textarea></label><label class="full">Photo<input type="file"></label></div><button class="btn danger" style="margin-top:12px" onclick="fakeToast('Problem submitted: emails sent to manager, repairman and master')">Submit problem</button></div></div></section><section id="inventory" class="section"><div class="grid"><div class="card span8"><h2>Inventory / RFID Scan Map</h2><div class="googleMap"><iframe loading="lazy" src="https://www.google.com/maps?q=Kopli%20103%20Tallinn&output=embed"></iframe><div class="mapShade"></div><div class="mapMarker blue" style="left:42%;top:45%"><span>12</span></div><div class="mapMarker green" style="left:52%;top:38%"><span>18</span></div><div class="mapMarker yellow" style="left:47%;top:55%"><span>9</span></div><div class="mapMarker" style="left:58%;top:50%"><span>3</span></div></div><p class="subtle">For MVP this map shows last confirmed location by QR/RFID scan. Real-time positioning would require additional readers or RTLS hardware.</p></div><div class="card span4"><h2>Inventory session</h2><table><tbody><tr><td>Expected units</td><td><strong>145</strong></td></tr><tr><td>Scanned</td><td><strong>126</strong></td></tr><tr><td>Missing</td><td><strong>19</strong></td></tr><tr><td>Wrong zone</td><td><strong>7</strong></td></tr></tbody></table><br><button class="btn" onclick="fakeToast('RFID scan session started; inventory action will be written to Action Log')">Start scan</button> <button class="btn secondary" onclick="fakeToast('Inventory report exported')">Export report</button><div class="smallHint">When scan is completed, the result is saved as an inventory action in the log.</div></div></div></section>
+</section><section id="issues" class="section"><div class="grid"><div class="card span8"><h2>Problem Reports</h2><table><thead><tr><th>Equipment</th><th>Problem</th><th>Location</th><th>Priority</th><th>Status</th></tr></thead><tbody><tr><td>1723-00033</td><td>Wire feed problem</td><td>Welding hall A</td><td><span class='chip blocked'>High</span></td><td>Open</td></tr><tr><td>1723-00111</td><td>Cooling leakage suspected</td><td>Repair zone</td><td><span class='chip conditional'>Medium</span></td><td>Assigned</td></tr><tr><td>1723-00076</td><td>Damaged torch connector</td><td>Assembly area</td><td><span class='chip conditional'>Medium</span></td><td>Open</td></tr></tbody></table></div><div class="card span4"><h2>Report problem form</h2><div class="selectedUnit"><strong>Selected equipment for alert:</strong><br>1723-00033 — Fronius TPS2700<br><span class="subtle">Notification will be linked to this unit card and sent to manager, repairman and master.</span></div><div class="formGrid"><label class="full">Equipment<select><option>1723-00033 - Fronius TPS2700</option><option>1723-00003 - Lincoln Speedtec</option><option>1723-00111 - Lincoln Speedtec 500S</option></select></label><label class="full">Problem type<select><option>Electrical issue</option><option>Wire feed problem</option><option>Cooling leak</option><option>Damaged cable / torch</option></select></label><label class="full">Description<textarea>Describe what happened and attach photo if needed.</textarea></label><label class="full">Photo<input type="file"></label></div><button class="btn danger" style="margin-top:12px" onclick="fakeToast('Problem submitted: emails sent to manager, repairman and master')">Submit problem</button></div></div></section><section id="inventory" class="section">
+  <div class="grid">
+    <div class="card span8">
+      <h2>Equipment pending inventory</h2>
+      <div id="inventoryMap" class="leafletMap"></div>
+      <p class="subtle">Map shows equipment that has not been inventoried during the last 12 months and has last known GPS position in database.</p>
+    </div>
+    <div class="card span4">
+      <h2>Inventory session</h2>
+      <table class="inventoryStatsTable">
+        <tbody>
+          <tr><td>Expected units</td><td id="inventoryExpectedCount">0</td></tr>
+          <tr><td>Scanned</td><td id="inventoryScannedCount">0</td></tr>
+          <tr><td>Missing</td><td id="inventoryMissingCount">0</td></tr>
+        </tbody>
+      </table>
+      <div class="inventoryScanTools">
+        <button class="btn" onclick="startInventoryScan()">Start scan</button>
+        <button class="btn secondary" onclick="renderInventoryDashboard()">Refresh</button>
+      </div>
+      <div id="inventoryScanStatus" class="inventoryScanStatus">Scan QR code to confirm annual inventory.</div>
+      <div class="inventoryMissingList">
+        <h3 style="margin:0 0 10px;font-size:15px">Missing / due for inventory</h3>
+        <div id="inventoryMissingList"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section id="qrlabels" class="section">
   <div class="grid">
@@ -620,6 +786,10 @@ const SAVE_MAINTENANCE_URL = "https://default810e707a0fee4c86951994811f49ad.0e.e
 const SAVE_VALIDATION_URL = "https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/8f1ca5ab633a41ae830ae50ab03ad2e8/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=R51sY--NV3C8lIpRGmAThECic4tBkeGTgu3NJ_a4qF0";
 const SAVE_REPAIR_URL = "https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/fb1f869b60884aa7b88302ec164930b3/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hzw411FMB-K-nfPC7KKdEDlsEU4Z8R4RHZTsEGR8_vc";
 
+const SAVE_INVENTORY_SCAN_URL = "https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2af11743ea3f4148a3e4935d13537117/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=fpmHC6UjXRInp2OekkpsvOKIZNBtubuzPq3ziEl6s_Y";
+
+const VALIDATE_ACCESS_PASSWORD_URL = "https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2fdc748e84034fce8c95a42077bbf683/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=yxft3HDTQGVms8747zXrWlRy4w2kDFFIiF2QBDoCwe4";
+
 const UPDATE_LAST_LOCATION_FLOW_URL = "https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/24869f85a83d469d8ad5aaf7d823bbb8/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=e7FX4m0Vt7l0YcO-X5mkApGDshnRZz4vTI3R1ZDMnL4";
 const ADD_ACTION_LOG_ENTRY_URL = "https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/76218c88025a4d478432eb71e4bac8ea/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=PcbBDZ3bWNx2w-j8qDi2uIhUde_XLFbowUObM2qTnSc";
 const GET_ACTION_LOG_URL = "https://default810e707a0fee4c86951994811f49ad.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/811c65319b91431fa7023b12ece37e32/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=20bR88CZih6rufYlj3t49sW1VSkMkLqfB-wY2lfTTxU";
@@ -633,7 +803,209 @@ let selectedEquipmentRowIndex=null;
 let equipmentColumnFilters={};
 let activeEquipmentFilterColumn=null;
 const months=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-function showSection(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.body.classList.toggle('equipment-mode',id==='equipment');document.body.classList.toggle('planner-mode',id==='planner');if(id==='planner')renderServicePlanner();if(id==='qrlabels')renderQrLabels();if(id==='log')loadActionLog(false);if(id==='execution')renderServiceExecution();if(id==='card')populateManualCardSelector();const titles={dashboard:['Dashboard','Overview of welding equipment status, service plan and utilisation.'],equipment:['',''],card:['Equipment Card / QR','Object card opened from QR or barcode label.'],planner:['Service Planner','Monthly maintenance plan and monthly approval workflow.'],execution:['Service Execution','Close maintenance tasks and attach reports.'],issues:['Problem Reports','Unplanned repair requests and alerts.'],inventory:['Inventory / RFID Scan','Last confirmed locations and inventory session.'],qrlabels:['QR Labels','Printable QR labels for equipment cards.'],log:['Action Log','Full traceability of all actions.']};document.getElementById('pageTitle').textContent=titles[id][0];document.getElementById('pageSub').textContent=titles[id][1];}
+
+const ACCESS_RULES={
+  viewer:{label:'View only',tabs:['dashboard','equipment','card','planner','execution','inventory','qrlabels','log'],card:'view',equipmentEdit:false,serviceExecution:false,inventoryScan:false,plannerApprove:false,qrLabels:true,log:true},
+  admin:{label:'Administrator',tabs:['dashboard','equipment','card','planner','execution','inventory','qrlabels','log'],card:'all',equipmentEdit:true,serviceExecution:true,inventoryScan:true,plannerApprove:true,qrLabels:true,log:true},
+  master:{label:'Master',tabs:['dashboard','equipment','card'],card:'all',equipmentEdit:false,serviceExecution:false,inventoryScan:false,plannerApprove:false,qrLabels:false,log:false},
+  service:{label:'Service contractor',tabs:['dashboard','card','execution'],card:'view',equipmentEdit:false,serviceExecution:true,inventoryScan:false,plannerApprove:false,qrLabels:false,log:false},
+  welder:{label:'Welder',tabs:['card'],card:'workonly',equipmentEdit:false,serviceExecution:false,inventoryScan:false,plannerApprove:false,qrLabels:false,log:false}
+};
+let accessSession=null;
+let appInitialized=false;
+
+function normalizeAccessRole(role){
+  role=cleanValue(role).toLowerCase();
+  const aliases={'view':'viewer','readonly':'viewer','read only':'viewer','admin':'admin','administrator':'admin','мастер':'master','masters':'master','service contractor':'service','обслуживание':'service','welder':'welder','сварщик':'welder'};
+  return aliases[role]||role;
+}
+function getAccessRules(){
+  const role=normalizeAccessRole(accessSession?.role||'');
+  return ACCESS_RULES[role]||null;
+}
+function isTabAllowed(id){
+  const rules=getAccessRules();
+  return !!rules && rules.tabs.includes(id);
+}
+function showAccessModal(message){
+  document.body.classList.add('auth-required');
+  const modal=document.getElementById('accessModal');
+  const err=document.getElementById('accessError');
+  if(modal)modal.style.display='flex';
+  if(err)err.textContent=message||'';
+  setTimeout(()=>document.getElementById('accessPasswordInput')?.focus(),100);
+}
+function hideAccessModal(){
+  document.body.classList.remove('auth-required');
+  const modal=document.getElementById('accessModal');
+  if(modal)modal.style.display='none';
+}
+async function submitAccessPassword(event){
+  event.preventDefault();
+  const input=document.getElementById('accessPasswordInput');
+  const err=document.getElementById('accessError');
+  const btn=document.getElementById('accessLoginBtn');
+  const password=input?.value||'';
+  if(!password){if(err)err.textContent='Enter password.';return;}
+  try{
+    if(btn){btn.disabled=true;btn.textContent='Checking...';}
+    if(err)err.textContent='';
+    const res=await fetch(VALIDATE_ACCESS_PASSWORD_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
+    let json={};
+    try{json=await res.json();}catch(_){}
+    if(!res.ok||json.success===false)throw new Error(json.message||'Invalid password');
+    const role=normalizeAccessRole(json.role);
+    if(!ACCESS_RULES[role])throw new Error('Unknown role returned by access database: '+json.role);
+    accessSession={role,displayName:cleanValue(json.displayName||ACCESS_RULES[role].label),loginTime:new Date().toISOString()};
+    sessionStorage.setItem('mocWeldingAccessSession',JSON.stringify(accessSession));
+    hideAccessModal();
+    await initializeProtectedApp();
+  }catch(e){
+    if(err)err.textContent=e.message||String(e);
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='Login';}
+  }
+}
+function logoutAccess(){
+  sessionStorage.removeItem('mocWeldingAccessSession');
+  accessSession=null;
+  appInitialized=false;
+  document.getElementById('accessPasswordInput').value='';
+  showAccessModal('Logged out.');
+}
+async function initAccess(){
+  try{
+    accessSession=JSON.parse(sessionStorage.getItem('mocWeldingAccessSession')||'null');
+  }catch(_){accessSession=null;}
+  if(!accessSession||!getAccessRules()){
+    showAccessModal('');
+    return;
+  }
+  hideAccessModal();
+  await initializeProtectedApp();
+}
+async function initializeProtectedApp(){
+  if(appInitialized){
+    applyAccessControls();
+    return;
+  }
+  appInitialized=true;
+  populateServicePlannerMonths();
+  await loadEquipmentFromSharePoint();
+  applyAccessControls();
+  openInitialAllowedSection();
+}
+function openInitialAllowedSection(){
+  const params=new URLSearchParams(window.location.search);
+  const requested=params.get('section') || (params.get('inv')?'card':'dashboard');
+  const target=isTabAllowed(requested)?requested:getAccessRules().tabs[0];
+  const btn=findNavButtonForSection(target);
+  showSection(target,btn||document.querySelector('.nav button:not(.accessLocked)'));
+}
+function findNavButtonForSection(sectionId){
+  return Array.from(document.querySelectorAll('.nav button')).find(btn=>(btn.getAttribute('onclick')||'').includes("'"+sectionId+"'"));
+}
+function applyAccessControls(){
+  const rules=getAccessRules();
+  if(!rules)return;
+  const label=ACCESS_RULES[accessSession.role]?.label||accessSession.role;
+  const box=document.getElementById('accessUserBox');
+  const name=document.getElementById('accessUserName');
+  if(box)box.style.display='flex';
+  if(name)name.textContent=(accessSession.displayName||label)+' / '+label;
+
+  document.querySelectorAll('.nav button').forEach(btn=>{
+    const onclick=btn.getAttribute('onclick')||'';
+    const match=onclick.match(/showSection\('([^']+)'/);
+    const id=match?match[1]:'';
+    btn.classList.toggle('accessLocked',!!id&&!rules.tabs.includes(id));
+  });
+
+  document.querySelectorAll('.section').forEach(sec=>{
+    sec.classList.toggle('accessLocked',!!sec.id&&!rules.tabs.includes(sec.id));
+  });
+
+  setWriteControlsState();
+}
+function setWriteControlsState(){
+  const rules=getAccessRules();
+  if(!rules)return;
+
+  const disableById=(id,disabled=true)=>{const el=document.getElementById(id);if(el){el.disabled=disabled;el.classList.toggle('accessDisabled',disabled);}};
+  const hideById=(id,hide=true)=>{const el=document.getElementById(id);if(el)el.classList.toggle('accessLocked',hide);};
+
+  disableById('equipmentEditSaveBtn',!rules.equipmentEdit);
+  disableById('deleteEquipmentBtn',!rules.equipmentEdit);
+  document.querySelectorAll('button[onclick*="openAddEquipmentModal"]').forEach(b=>{b.disabled=!rules.equipmentEdit;b.classList.toggle('accessDisabled',!rules.equipmentEdit);});
+  document.querySelectorAll('button[onclick*="approveMonthlyPlan"]').forEach(b=>{b.disabled=!rules.plannerApprove;b.classList.toggle('accessDisabled',!rules.plannerApprove);});
+  document.querySelectorAll('button[onclick*="startInventoryScan"],button[onclick*="handleManualInventoryQr"]').forEach(b=>{b.disabled=!rules.inventoryScan;b.classList.toggle('accessDisabled',!rules.inventoryScan);});
+  const serviceBtn=document.getElementById('serviceSaveBtn');
+  if(serviceBtn){serviceBtn.disabled=!rules.serviceExecution;serviceBtn.classList.toggle('accessDisabled',!rules.serviceExecution);}
+  document.querySelectorAll('#serviceExecutionForm input,#serviceExecutionForm select').forEach(el=>{
+    const disabled=!rules.serviceExecution;
+    el.disabled=disabled;
+    el.classList.toggle('accessDisabled',disabled);
+  });
+
+  applyCardAccessControls();
+}
+function applyCardAccessControls(){
+  const rules=getAccessRules();
+  if(!rules)return;
+  const mode=rules.card;
+  document.querySelectorAll('button[onclick*="updateCardWorkStatus"],button[onclick*="reportProblemFromCard"]').forEach(btn=>{
+    const onclick=btn.getAttribute('onclick')||'';
+    let allow=false;
+    if(mode==='all')allow=true;
+    if(mode==='workonly' && (onclick.includes("'In work'")||onclick.includes("'Available'")))allow=true;
+    btn.classList.toggle('accessLocked',!allow);
+    btn.disabled=!allow;
+  });
+  document.querySelectorAll('.certificateButtons').forEach(el=>{
+    el.classList.toggle('accessLocked',mode==='workonly');
+  });
+  document.querySelectorAll('.cardManualSelector').forEach(el=>{
+    el.classList.toggle('accessLocked',mode==='workonly');
+  });
+}
+function requirePermission(permission){
+  const rules=getAccessRules();
+  if(!rules)return false;
+  if(permission==='equipmentEdit')return !!rules.equipmentEdit;
+  if(permission==='serviceExecution')return !!rules.serviceExecution;
+  if(permission==='inventoryScan')return !!rules.inventoryScan;
+  if(permission==='plannerApprove')return !!rules.plannerApprove;
+  if(permission==='cardAll')return rules.card==='all';
+  if(permission==='cardWork')return rules.card==='all'||rules.card==='workonly';
+  return false;
+}
+
+function showSection(id,btn){
+  if(accessSession&&!isTabAllowed(id)){
+    fakeToast('Access denied for this section.');
+    const fallback=getAccessRules().tabs[0];
+    const fallbackBtn=findNavButtonForSection(fallback);
+    return showSection(fallback,fallbackBtn||btn);
+  }
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  const section=document.getElementById(id);
+  if(section)section.classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.body.classList.toggle('equipment-mode',id==='equipment');
+  document.body.classList.toggle('planner-mode',id==='planner');
+  if(id==='dashboard')renderDashboard();
+  if(id==='planner')renderServicePlanner();
+  if(id==='qrlabels')renderQrLabels();
+  if(id==='log')loadActionLog(false);
+  if(id==='execution'){renderServiceExecution();setTimeout(()=>{if(serviceLeafletMap)serviceLeafletMap.invalidateSize();},150);}
+  if(id==='card')populateManualCardSelector();
+  if(id==='inventory'){renderInventoryDashboard();setTimeout(()=>{if(inventoryLeafletMap)inventoryLeafletMap.invalidateSize();},150);}
+  const titles={dashboard:['Dashboard','Overview of welding equipment status, service plan and utilisation.'],equipment:['',''],card:['Equipment Card / QR','Object card opened from QR or barcode label.'],planner:['Service Planner','Monthly maintenance plan and monthly approval workflow.'],execution:['Service Execution','Close maintenance tasks and attach reports.'],issues:['Problem Reports','Unplanned repair requests and alerts.'],inventory:['Inventory / RFID Scan','Last confirmed locations and inventory session.'],qrlabels:['QR Labels','Printable QR labels for equipment cards.'],log:['Action Log','Full traceability of all actions.']};
+  document.getElementById('pageTitle').textContent=titles[id]?.[0]||'';
+  document.getElementById('pageSub').textContent=titles[id]?.[1]||'';
+  setTimeout(applyAccessControls,80);
+}
 function fakeToast(msg){const t=document.getElementById('toast');if(!t){console.log(msg);return;}t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2300)}
 function safeText(value){return String(value??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
 function cleanValue(value){return value===null||value===undefined?'':String(value).trim()}
@@ -684,7 +1056,7 @@ function displayEquipmentValue(col,value){if(['validation date','next validation
 function getMaintenanceStatus(row){const next=excelDateToText(getEquipmentField(row,'next maintanence'));if(!next)return 'Available';const today=new Date().toISOString().slice(0,10);return next<today?'Overdue':'Available'}
 function monthFromDateText(value){const txt=excelDateToText(value);if(!/^\d{4}-\d{2}-\d{2}$/.test(txt))return 1;return Number(txt.slice(5,7))||1}
 function mapEquipmentRows(rows){equipmentRows=(Array.isArray(rows)?rows:[]).map(normalizeRowKeys);equipment=equipmentRows.map((r,i)=>({no:cleanValue(getEquipmentField(r,'number'))||i+1,inv:cleanValue(getEquipmentField(r,'inventory number')),name:cleanValue(getEquipmentField(r,'name')),old:cleanValue(getEquipmentField(r,'old inventy number')),month:monthFromDateText(getEquipmentField(r,'next maintanence')||getEquipmentField(r,'next validation')),freq:cleanValue(getEquipmentField(r,'maintanence frequency')),hours:cleanValue(getEquipmentField(r,'labor intensity in hours')),cost:cleanValue(getEquipmentField(r,'price x hours')||getEquipmentField(r,'price')),status:getMaintenanceStatus(r),loc:cleanValue(getEquipmentField(r,'location'))}));}
-async function loadEquipmentFromSharePoint(){const st=document.getElementById('equipmentLoadStatus');const err=document.getElementById('equipmentError');const body=document.getElementById('equipmentTableBody');if(st)st.textContent='Loading equipment data from SharePoint...';if(err){err.style.display='none';err.textContent=''}if(body)body.innerHTML='<tr><td class="subtle">Loading data from SharePoint...</td></tr>';try{const res=await fetch(GET_EQUIPMENT_LIST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});if(!res.ok)throw new Error('HTTP '+res.status+' '+res.statusText);const json=await res.json();const rows=Array.isArray(json)?json:(json.data||[]);mapEquipmentRows(rows);changedEquipmentRows.clear();selectedEquipmentRowIndex=null;renderEquipmentTable();populateServicePlannerMonths();if(document.getElementById('planner')?.classList.contains('active'))renderServicePlanner();if(document.getElementById('qrlabels')?.classList.contains('active'))renderQrLabels();if(document.getElementById('execution')?.classList.contains('active'))renderServiceExecution();if(document.getElementById('card')?.classList.contains('active'))populateManualCardSelector();openEquipmentCardFromUrl();setTimeout(openEquipmentCardFromUrl,500);setTimeout(openEquipmentCardFromUrl,1500);if(st)st.textContent='Loaded from SharePoint: '+equipmentRows.length+' records';}catch(e){if(st)st.textContent='Loading failed';if(err){err.style.display='block';err.innerHTML='<strong>Could not load data from SharePoint.</strong><br>'+safeText(e.message)+'<br><br>Check Flow response headers: Content-Type = application/json and Access-Control-Allow-Origin = *';}if(body)body.innerHTML='<tr><td class="subtle">No data loaded.</td></tr>';}}
+async function loadEquipmentFromSharePoint(){const st=document.getElementById('equipmentLoadStatus');const err=document.getElementById('equipmentError');const body=document.getElementById('equipmentTableBody');if(st)st.textContent='Loading equipment data from SharePoint...';if(err){err.style.display='none';err.textContent=''}if(body)body.innerHTML='<tr><td class="subtle">Loading data from SharePoint...</td></tr>';try{const res=await fetch(GET_EQUIPMENT_LIST_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});if(!res.ok)throw new Error('HTTP '+res.status+' '+res.statusText);const json=await res.json();const rows=Array.isArray(json)?json:(json.data||[]);mapEquipmentRows(rows);changedEquipmentRows.clear();selectedEquipmentRowIndex=null;renderEquipmentTable();populateServicePlannerMonths();if(document.getElementById('dashboard')?.classList.contains('active'))renderDashboard();if(document.getElementById('planner')?.classList.contains('active'))renderServicePlanner();if(document.getElementById('qrlabels')?.classList.contains('active'))renderQrLabels();if(document.getElementById('execution')?.classList.contains('active'))renderServiceExecution();if(document.getElementById('card')?.classList.contains('active'))populateManualCardSelector();if(document.getElementById('inventory')?.classList.contains('active'))renderInventoryDashboard();openEquipmentCardFromUrl();setTimeout(openEquipmentCardFromUrl,500);setTimeout(openEquipmentCardFromUrl,1500);if(st)st.textContent='Loaded from SharePoint: '+equipmentRows.length+' records';}catch(e){if(st)st.textContent='Loading failed';if(err){err.style.display='block';err.innerHTML='<strong>Could not load data from SharePoint.</strong><br>'+safeText(e.message)+'<br><br>Check Flow response headers: Content-Type = application/json and Access-Control-Allow-Origin = *';}if(body)body.innerHTML='<tr><td class="subtle">No data loaded.</td></tr>';}}
 function rowPassesEquipmentFilters(row){
   return equipmentColumns.every(col=>{
     const selected=equipmentColumnFilters[col];
@@ -856,7 +1228,7 @@ function setupAddEquipmentAutoCalculation(){
   updateAddEquipmentTotalPrice();
 }
 
-function openAddEquipmentModal(){
+function openAddEquipmentModal(){if(!requirePermission('equipmentEdit')){fakeToast('Access denied.');return;}
   const modal=document.getElementById('addEquipmentModal');
   const fields=document.getElementById('addEquipmentFields');
   const msg=document.getElementById('addEquipmentMessage');
@@ -921,7 +1293,7 @@ function updateDeleteButtonState(){
   const btn=document.getElementById('deleteEquipmentBtn');
   if(btn)btn.disabled=selectedEquipmentRowIndex===null||!equipmentRows[selectedEquipmentRowIndex];
 }
-async function deleteSelectedEquipmentRow(){
+async function deleteSelectedEquipmentRow(){if(!requirePermission('equipmentEdit')){fakeToast('Access denied.');return;}
   const err=document.getElementById('equipmentError');
   const btn=document.getElementById('deleteEquipmentBtn');
   const row=equipmentRows[selectedEquipmentRowIndex];
@@ -1210,7 +1582,7 @@ function updateServicePlannerSummary(){
     summary.textContent='Generated from SharePoint for '+periodLabel+': '+maintAll+' maintenance / '+valAll+' validation. Selected: '+maintSelected+' maintenance / '+valSelected+' validation. Total: maintenance '+formatPlannerAmount(totalHours)+' h / '+formatPlannerAmount(totalCost)+' EUR (maintenance '+formatPlannerAmount(maintenanceCost)+' EUR / validation '+formatPlannerAmount(validationCost)+' EUR).';
   }
 }
-function approveMonthlyPlan(){
+function approveMonthlyPlan(){if(!requirePermission('plannerApprove')){fakeToast('Access denied.');return;}
   const checked=Array.from(document.querySelectorAll('#servicePlannerBody tr')).filter(tr=>tr.querySelector('input[type="checkbox"]')?.checked);
   if(!checked.length){fakeToast('No units selected for plan');return;}
   const mode=document.getElementById('servicePlannerMode')?.value||'monthly';
@@ -1728,7 +2100,7 @@ function updateCardWorkStatus(status){
   if(modal)modal.classList.add('active');
   setTimeout(()=>{if(userInput&&!userInput.value)userInput.focus();else if(commentInput)commentInput.focus();},50);
 }
-function reportProblemFromCard(){
+function reportProblemFromCard(){if(!requirePermission('cardAll')){fakeToast('Access denied.');return;}
   const inv=getCurrentCardInventory();
   if(!inv){fakeToast('No equipment selected.');return;}
   pendingStatusUpdate={inventory:inv,status:'Blocked',action:'Report problem'};
@@ -2159,6 +2531,7 @@ function renderEquipmentCard(row){
   const manualSel=document.getElementById('manualCardEquipmentSelect');
   if(manualSel){if(!manualSel.options.length||manualSel.options.length===1)populateManualCardSelector();manualSel.value=inv;}
   renderEquipmentRecentActions(inv);
+  setTimeout(applyAccessControls,60);
 }
 
 
@@ -2253,15 +2626,58 @@ function onServiceEquipmentChange(){
   }
   updateServiceMap(row);
 }
+
+let serviceLeafletMap=null;
+let serviceLeafletMarker=null;
+let inventoryLeafletMap=null;
+let inventoryLeafletLayer=null;
+const DEFAULT_MAP_CENTER=[59.4608,24.6600];
+
+function isLeafletReady(){
+  return typeof L!=='undefined' && !!L.map;
+}
+function initLeafletMap(containerId,existingMap,zoom){
+  const el=document.getElementById(containerId);
+  if(!el)return null;
+  if(!isLeafletReady()){
+    el.innerHTML='<div class="mapFallback">Interactive map library could not be loaded. Check internet access or company firewall.</div>';
+    return null;
+  }
+  if(existingMap){
+    setTimeout(()=>existingMap.invalidateSize(),80);
+    return existingMap;
+  }
+  const map=L.map(containerId,{scrollWheelZoom:true}).setView(DEFAULT_MAP_CENTER,zoom||15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom:19,
+    attribution:'&copy; OpenStreetMap'
+  }).addTo(map);
+  setTimeout(()=>map.invalidateSize(),120);
+  return map;
+}
+function normalizeLatLng(lat,lng){
+  const la=Number(String(lat).replace(',','.'));
+  const ln=Number(String(lng).replace(',','.'));
+  if(!Number.isFinite(la)||!Number.isFinite(ln))return null;
+  return [la,ln];
+}
+function buildMarkerPopup(row,extra){
+  const inv=safeText(cleanValue(getEquipmentField(row,'inventory number')));
+  const name=safeText(cleanValue(getEquipmentField(row,'name')));
+  const loc=safeText(cleanValue(getEquipmentField(row,'location')));
+  const gpsDate=safeText(excelDateToText(getEquipmentField(row,'last location date'))||cleanValue(getEquipmentField(row,'last location date')));
+  return '<div class="serviceMapPopup"><b>'+inv+'</b><br>'+name+'<br>Last scan: '+(gpsDate||'-')+'<br>Location: '+(loc||'-')+(extra?'<br>'+extra:'')+'</div>';
+}
+
 function updateServiceMap(row){
-  const frame=document.getElementById('serviceMapFrame');
-  const marker=document.getElementById('serviceMapMarker');
-  const label=document.getElementById('serviceMapLabel');
   const info=document.getElementById('serviceMapInfo');
+  serviceLeafletMap=initLeafletMap('serviceLocationMap',serviceLeafletMap,16);
+  if(serviceLeafletMarker&&serviceLeafletMap){
+    serviceLeafletMap.removeLayer(serviceLeafletMarker);
+    serviceLeafletMarker=null;
+  }
   if(!row){
-    if(frame)frame.src='https://www.google.com/maps?q=Kopli%20103%20Tallinn&output=embed';
-    if(marker)marker.style.display='none';
-    if(label)label.style.display='none';
+    if(serviceLeafletMap)serviceLeafletMap.setView(DEFAULT_MAP_CENTER,15);
     if(info)info.textContent='Select equipment to show last known GPS position from database.';
     return;
   }
@@ -2271,19 +2687,15 @@ function updateServiceMap(row){
   const lat=cleanValue(getEquipmentField(row,'last known latitude'));
   const lng=cleanValue(getEquipmentField(row,'last known longitude'));
   const gpsDate=excelDateToText(getEquipmentField(row,'last location date'))||cleanValue(getEquipmentField(row,'last location date'));
-  if(lat&&lng){
-    const q=lat+','+lng;
-    if(frame)frame.src='https://www.google.com/maps?q='+encodeURIComponent(q)+'&z=18&output=embed';
-    if(marker)marker.style.display='';
-    if(label){
-      label.style.display='';
-      label.innerHTML='<strong>'+safeText(inv)+'</strong>Last scan: '+safeText(gpsDate||'date not available');
-    }
-    if(info)info.innerHTML='<b>'+safeText(inv+(name?' - '+name:''))+'</b><br>GPS: '+safeText(lat)+', '+safeText(lng)+'<br>Date: '+safeText(gpsDate||'-')+'<br>Location: '+safeText(loc||'-')+'<br><a class="serviceMapLink" target="_blank" rel="noopener" href="https://www.google.com/maps?q='+encodeURIComponent(q)+'">Open in Google Maps</a>';
+  const pos=normalizeLatLng(lat,lng);
+  if(pos&&serviceLeafletMap){
+    serviceLeafletMarker=L.marker(pos).addTo(serviceLeafletMap).bindPopup(buildMarkerPopup(row));
+    serviceLeafletMarker.openPopup();
+    serviceLeafletMap.setView(pos,18);
+    setTimeout(()=>serviceLeafletMap.invalidateSize(),120);
+    if(info)info.innerHTML='<b>'+safeText(inv+(name?' - '+name:''))+'</b><br>GPS: '+safeText(lat)+', '+safeText(lng)+'<br>Date: '+safeText(gpsDate||'-')+'<br>Location: '+safeText(loc||'-')+'<br><a class="serviceMapLink" target="_blank" rel="noopener" href="https://www.google.com/maps?q='+encodeURIComponent(lat+','+lng)+'">Open in Google Maps</a>';
   }else{
-    if(frame)frame.src='https://www.google.com/maps?q=Kopli%20103%20Tallinn&output=embed';
-    if(marker)marker.style.display='none';
-    if(label)label.style.display='none';
+    if(serviceLeafletMap)serviceLeafletMap.setView(DEFAULT_MAP_CENTER,15);
     if(info)info.innerHTML='<b>'+safeText(inv+(name?' - '+name:''))+'</b><br>No GPS position saved yet.<br>Location: '+safeText(loc||'-');
   }
 }
@@ -2295,7 +2707,7 @@ function fileToBase64Plain(file){
     reader.readAsDataURL(file);
   });
 }
-async function submitServiceExecution(event){
+async function submitServiceExecution(event){if(!requirePermission('serviceExecution')){event&&event.preventDefault();fakeToast('Access denied.');return;}
   event.preventDefault();
   const status=document.getElementById('serviceExecutionStatus');
   const btn=document.getElementById('serviceSaveBtn');
@@ -2370,6 +2782,424 @@ async function submitServiceExecution(event){
 }
 
 
+
+let inventoryScannerStream=null;
+let inventoryScannerTimer=null;
+let inventoryScanInProgress=false;
+
+function parseInventoryDate(value){
+  const txt=excelDateToText(value)||cleanValue(value);
+  if(!txt)return null;
+  if(/^\d{4}-\d{2}-\d{2}$/.test(txt))return new Date(txt+'T00:00:00');
+  const d=new Date(txt);
+  return Number.isNaN(d.getTime())?null:d;
+}
+function inventoryCutoffDate(){
+  const d=new Date();
+  d.setFullYear(d.getFullYear()-1);
+  d.setHours(0,0,0,0);
+  return d;
+}
+function getInventoryDateText(row){
+  return excelDateToText(getEquipmentField(row,'inventory')) || cleanValue(getEquipmentField(row,'inventory'));
+}
+function isInventoryScanned(row){
+  const d=parseInventoryDate(getEquipmentField(row,'inventory'));
+  return !!d && d>=inventoryCutoffDate();
+}
+function getInventoryRows(){
+  const rows=equipmentRows.filter(row=>cleanValue(getEquipmentField(row,'inventory number')));
+  const scanned=rows.filter(isInventoryScanned);
+  const missing=rows.filter(row=>!isInventoryScanned(row));
+  return {rows,scanned,missing};
+}
+function renderInventoryDashboard(){
+  const expected=document.getElementById('inventoryExpectedCount');
+  const scannedEl=document.getElementById('inventoryScannedCount');
+  const missingEl=document.getElementById('inventoryMissingCount');
+  const list=document.getElementById('inventoryMissingList');
+  if(!expected||!scannedEl||!missingEl)return;
+  const data=getInventoryRows();
+  expected.textContent=data.rows.length;
+  scannedEl.textContent=data.scanned.length;
+  missingEl.textContent=data.missing.length;
+  const missingSorted=data.missing.slice().sort((a,b)=>cleanValue(getEquipmentField(a,'inventory number')).localeCompare(cleanValue(getEquipmentField(b,'inventory number'))));
+  if(list){
+    if(!missingSorted.length){
+      list.innerHTML='<div class="recentActionEmpty">All equipment has valid inventory date.</div>';
+    }else{
+      list.innerHTML=missingSorted.slice(0,80).map(row=>{
+        const inv=cleanValue(getEquipmentField(row,'inventory number'));
+        const name=cleanValue(getEquipmentField(row,'name'));
+        const invDate=getInventoryDateText(row)||'not scanned';
+        return '<div class="inventoryMissingItem"><div><b>'+safeText(inv)+'</b><small>'+safeText(name||'')+'</small><small>Inventory: '+safeText(invDate)+'</small></div><button class="btn secondary" data-inv="'+safeText(inv)+'" onclick="selectInventoryMissingUnit(this.dataset.inv)">Open</button></div>';
+      }).join('');
+    }
+  }
+  renderInventoryMap(missingSorted);
+}
+function selectInventoryMissingUnit(inv){
+  const row=equipmentRows.find(r=>cleanValue(getEquipmentField(r,'inventory number'))===inv);
+  if(!row)return;
+  const pos=normalizeLatLng(getEquipmentField(row,'last known latitude'),getEquipmentField(row,'last known longitude'));
+  if(pos&&inventoryLeafletMap&&inventoryLeafletLayer){
+    inventoryLeafletMap.setView(pos,18);
+    inventoryLeafletLayer.eachLayer(layer=>{
+      if(layer.options&&layer.options.inventoryNumber===inv){
+        layer.openPopup();
+      }
+    });
+  }
+  fakeToast('Selected missing unit: '+inv);
+}
+function renderInventoryMap(missingRows){
+  inventoryLeafletMap=initLeafletMap('inventoryMap',inventoryLeafletMap,15);
+  if(!inventoryLeafletMap)return;
+  if(inventoryLeafletLayer){
+    inventoryLeafletLayer.clearLayers();
+  }else{
+    inventoryLeafletLayer=L.layerGroup().addTo(inventoryLeafletMap);
+  }
+  const withGps=missingRows
+    .map(row=>({row,pos:normalizeLatLng(getEquipmentField(row,'last known latitude'),getEquipmentField(row,'last known longitude'))}))
+    .filter(x=>!!x.pos);
+  if(!withGps.length){
+    inventoryLeafletMap.setView(DEFAULT_MAP_CENTER,15);
+    return;
+  }
+  const bounds=[];
+  withGps.forEach(item=>{
+    const row=item.row;
+    const pos=item.pos;
+    bounds.push(pos);
+    const inv=cleanValue(getEquipmentField(row,'inventory number'));
+    const invDate=getInventoryDateText(row)||'not scanned';
+    L.marker(pos,{inventoryNumber:inv})
+      .addTo(inventoryLeafletLayer)
+      .bindPopup('<div class="inventoryMapPopup">'+buildMarkerPopup(row,'Inventory: '+safeText(invDate))+'</div>');
+  });
+  if(bounds.length===1){
+    inventoryLeafletMap.setView(bounds[0],18);
+  }else{
+    inventoryLeafletMap.fitBounds(bounds,{padding:[32,32],maxZoom:18});
+  }
+  setTimeout(()=>inventoryLeafletMap.invalidateSize(),120);
+}
+function extractInventoryNumberFromQr(text){
+  text=cleanValue(text);
+  if(!text)return '';
+  try{
+    const u=new URL(text);
+    return cleanValue(u.searchParams.get('inv')||u.searchParams.get('inventory')||u.searchParams.get('equipment'));
+  }catch(_){}
+  const m=text.match(/[?&](?:inv|inventory|equipment)=([^&]+)/i);
+  if(m)return decodeURIComponent(m[1]);
+  return text;
+}
+async function startInventoryScan(){if(!requirePermission('inventoryScan')){fakeToast('Access denied.');return;}
+  const status=document.getElementById('inventoryScanStatus');
+  if(status){status.className='inventoryScanStatus';status.textContent='Starting camera...';}
+  const modal=document.getElementById('inventoryScanModal');
+  if(modal)modal.classList.add('active');
+  const video=document.getElementById('inventoryQrVideo');
+  try{
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('Camera is not available in this browser.');
+    inventoryScannerStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
+    if(video){
+      video.srcObject=inventoryScannerStream;
+      await video.play();
+    }
+    if(!('BarcodeDetector' in window)){
+      if(status)status.textContent='Camera opened. Automatic QR detection is not supported in this browser. Use manual input below.';
+      return;
+    }
+    const detector=new BarcodeDetector({formats:['qr_code']});
+    inventoryScanInProgress=false;
+    inventoryScannerTimer=setInterval(async()=>{
+      if(inventoryScanInProgress||!video||video.readyState<2)return;
+      inventoryScanInProgress=true;
+      try{
+        const codes=await detector.detect(video);
+        if(codes&&codes.length){
+          const raw=codes[0].rawValue||codes[0].rawData||'';
+          await handleInventoryQrText(raw);
+        }
+      }catch(e){
+        console.warn(e);
+      }finally{
+        inventoryScanInProgress=false;
+      }
+    },700);
+    if(status)status.textContent='Camera ready. Point camera at equipment QR code.';
+  }catch(e){
+    if(status){status.className='inventoryScanStatus error';status.textContent='Could not start camera: '+(e.message||String(e));}
+  }
+}
+function stopInventoryScan(){
+  if(inventoryScannerTimer){clearInterval(inventoryScannerTimer);inventoryScannerTimer=null;}
+  if(inventoryScannerStream){
+    inventoryScannerStream.getTracks().forEach(t=>t.stop());
+    inventoryScannerStream=null;
+  }
+  const video=document.getElementById('inventoryQrVideo');
+  if(video)video.srcObject=null;
+  const modal=document.getElementById('inventoryScanModal');
+  if(modal)modal.classList.remove('active');
+}
+async function handleManualInventoryQr(){if(!requirePermission('inventoryScan')){fakeToast('Access denied.');return;}
+  const input=document.getElementById('inventoryManualQrInput');
+  await handleInventoryQrText(input?.value||'');
+}
+async function handleInventoryQrText(text){
+  const inv=extractInventoryNumberFromQr(text);
+  const status=document.getElementById('inventoryScanStatus');
+  if(!inv){if(status){status.className='inventoryScanStatus error';status.textContent='QR code does not contain inventory number.';}return;}
+  const row=equipmentRows.find(r=>cleanValue(getEquipmentField(r,'inventory number')).toLowerCase()===inv.toLowerCase());
+  if(!row){if(status){status.className='inventoryScanStatus error';status.textContent='Equipment not found in database: '+inv;}return;}
+  const today=todayDateString();
+  const oldInventory=getInventoryDateText(row)||'';
+  try{
+    if(status){status.className='inventoryScanStatus';status.textContent='Saving inventory scan for '+inv+'...';}
+    const res=await fetch(SAVE_INVENTORY_SCAN_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({'inventory number':cleanValue(getEquipmentField(row,'inventory number')),'inventory':today})});
+    let json={};
+    try{json=await res.json();}catch(_){}
+    if(!res.ok||json.success===false)throw new Error(json.message||('HTTP '+res.status+' '+res.statusText));
+    row['inventory']=today;
+    postActionLogEntry({'date':actionLogDateNow(),'inventory number':cleanValue(getEquipmentField(row,'inventory number')),'action type':'INVENTORY SCAN','field name':'inventory','old value':oldInventory,'new value':today,'changed by':'QR scan','source':'Inventory / RFID Scan','comment':'Inventory confirmed by QR scan'});
+    if(status){status.className='inventoryScanStatus ok';status.textContent='Inventory scan saved: '+cleanValue(getEquipmentField(row,'inventory number'));}
+    fakeToast('Inventory scan saved.');
+    stopInventoryScan();
+    await loadEquipmentFromSharePoint();
+    renderInventoryDashboard();
+  }catch(e){
+    if(status){status.className='inventoryScanStatus error';status.textContent='Could not save inventory scan: '+(e.message||String(e));}
+  }
+}
+
+
+
+let dashboardMonthPlanMap=null;
+let dashboardMonthPlanLayer=null;
+let dashboardMonthPlanRows=[];
+
+function toNumberValue(value){
+  const n=Number(cleanValue(value).replace(',','.').replace(/[^\d.-]/g,''));
+  return Number.isFinite(n)?n:0;
+}
+function isExcludedFromServiceCost(row){
+  const status=cleanValue(getEquipmentField(row,'status')||getEquipmentField(row,'equipment status')).toLowerCase();
+  const loc=cleanValue(getEquipmentField(row,'location')).toLowerCase();
+  const employee=cleanValue(getEquipmentField(row,'employee')).toLowerCase();
+  const text=status+' '+loc+' '+employee;
+  return /warehouse|conserv|storage|склад|консер|отстой|out of service|decommission|списан|изъят/.test(text);
+}
+function parseDashboardDate(value){
+  const txt=excelDateToText(value)||cleanValue(value);
+  if(!txt)return null;
+  if(/^\d{4}-\d{2}-\d{2}$/.test(txt))return new Date(txt+'T00:00:00');
+  const d=new Date(txt);
+  return Number.isNaN(d.getTime())?null:d;
+}
+function formatDashboardDate(value){
+  return excelDateToText(value)||cleanValue(value)||'';
+}
+function formatEur(value){
+  const n=Math.round((Number(value)||0)*100)/100;
+  return n.toLocaleString('en-US',{maximumFractionDigits:0});
+}
+function getMaintenanceCost(row){
+  const price=toNumberValue(getEquipmentField(row,'price'));
+  const hours=toNumberValue(getEquipmentField(row,'labor intensity in hours'));
+  const calculated=price*hours;
+  if(calculated)return calculated;
+  return toNumberValue(getEquipmentField(row,'price x hours'));
+}
+function getValidationCost(row){
+  return toNumberValue(getEquipmentField(row,'validation price')) || 46;
+}
+function dashboardYearBounds(){
+  const now=new Date();
+  const y=now.getFullYear();
+  return {from:y+'-01-01',to:y+'-12-31'};
+}
+function initDashboardPeriodInputs(){
+  const f=document.getElementById('dashboardPlanFrom');
+  const t=document.getElementById('dashboardPlanTo');
+  if(!f||!t)return;
+  const b=dashboardYearBounds();
+  if(!f.value)f.value=b.from;
+  if(!t.value)t.value=b.to;
+}
+function isDateInRange(d,from,to){
+  if(!d)return false;
+  const fd=from?new Date(from+'T00:00:00'):null;
+  const td=to?new Date(to+'T23:59:59'):null;
+  return (!fd||d>=fd)&&(!td||d<=td);
+}
+function getDashboardPlanItems(from,to){
+  const items=[];
+  equipmentRows.forEach(row=>{
+    const inv=cleanValue(getEquipmentField(row,'inventory number'));
+    if(!inv||isExcludedFromServiceCost(row))return;
+    const mDate=parseDashboardDate(getEquipmentField(row,'next maintanence')||getEquipmentField(row,'next maintenance'));
+    if(isDateInRange(mDate,from,to)){
+      items.push({row,inv,type:'Maintenance',date:mDate,dateText:formatDashboardDate(getEquipmentField(row,'next maintanence')||getEquipmentField(row,'next maintenance')),cost:getMaintenanceCost(row)});
+    }
+    const vDate=parseDashboardDate(getEquipmentField(row,'next validation'));
+    if(isDateInRange(vDate,from,to)){
+      items.push({row,inv,type:'Validation',date:vDate,dateText:formatDashboardDate(getEquipmentField(row,'next validation')),cost:getValidationCost(row)});
+    }
+  });
+  return items;
+}
+function getDashboardStatus(row){
+  const status=cleanValue(getEquipmentField(row,'status')||getEquipmentField(row,'equipment status')).toLowerCase();
+  const loc=cleanValue(getEquipmentField(row,'location')).toLowerCase();
+  const now=new Date();now.setHours(0,0,0,0);
+  const nextMaint=parseDashboardDate(getEquipmentField(row,'next maintanence')||getEquipmentField(row,'next maintenance'));
+  const nextVal=parseDashboardDate(getEquipmentField(row,'next validation'));
+  const overdue=(nextMaint&&nextMaint<now)||(nextVal&&nextVal<now);
+  if(overdue||/blocked|repair|out|fault|broken|заблок|ремонт|слом/.test(status))return 'Overdue / repair required';
+  if(/conserv|warehouse|склад|консер/.test(status+' '+loc))return 'Conserved / under service';
+  if(/in work|work|taken|в работе/.test(status))return 'In work / service due';
+  return 'Available / ready for work';
+}
+function getDashboardFamily(row){
+  const txt=(cleanValue(getEquipmentField(row,'name'))+' '+cleanValue(getEquipmentField(row,'model'))).toLowerCase();
+  const keys=[
+    ['Fronius',['fronius','tps']],
+    ['Kemppi',['kemppi','kempi','fastmig','minarc']],
+    ['Lincoln',['lincoln','speedtec','powertec']],
+    ['ESAB',['esab','origo','caddy']],
+    ['EWM',['ewm']],
+    ['Miller',['miller']],
+    ['Plasma',['plasma']]
+  ];
+  for(const [name,arr] of keys){
+    if(arr.some(k=>txt.includes(k)))return name;
+  }
+  return 'Other';
+}
+function renderDashboard(){
+  initDashboardPeriodInputs();
+  const rows=equipmentRows.filter(r=>cleanValue(getEquipmentField(r,'inventory number')));
+  const from=document.getElementById('dashboardPlanFrom')?.value || dashboardYearBounds().from;
+  const to=document.getElementById('dashboardPlanTo')?.value || dashboardYearBounds().to;
+  const planItems=getDashboardPlanItems(from,to);
+  const annualCost=rows.reduce((sum,row)=>isExcludedFromServiceCost(row)?sum:(sum+getMaintenanceCost(row)+getValidationCost(row)),0);
+  const statusCounts={};
+  rows.forEach(r=>{const s=getDashboardStatus(r);statusCounts[s]=(statusCounts[s]||0)+1;});
+  const openIssues=(statusCounts['Overdue / repair required']||0);
+  const reg=document.getElementById('dashboardRegisterCount');
+  const cost=document.getElementById('dashboardAnnualCost');
+  const issue=document.getElementById('dashboardOpenIssues');
+  if(reg)reg.textContent=rows.length;
+  if(cost)cost.textContent=formatEur(annualCost);
+  if(issue)issue.textContent=openIssues;
+  renderDashboardPlanChart(planItems,from,to);
+  renderDashboardFamilies(rows);
+  renderDashboardOperationalStatus(rows,statusCounts);
+  renderDashboardCurrentMonthPlan(rows);
+}
+function renderDashboardPlanChart(items,from,to){
+  const chart=document.getElementById('dashboardPlanChart');
+  const note=document.getElementById('dashboardPlanNote');
+  if(!chart)return;
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const totals=new Array(12).fill(0);
+  items.forEach(item=>{if(item.date)totals[item.date.getMonth()]+=item.cost;});
+  const max=Math.max(...totals,1);
+  chart.innerHTML=totals.map((v,i)=>{
+    const h=Math.max(6,Math.round((v/max)*185));
+    return '<div class="moneyBar" style="height:'+h+'px">'+(v?formatEur(v):'0')+'<span>'+months[i]+'</span></div>';
+  }).join('');
+  const now=new Date();
+  const fy=new Date(from+'T00:00:00');
+  const ty=new Date(to+'T23:59:59');
+  if(now>=fy&&now<=ty){
+    const yearStart=new Date(now.getFullYear(),0,1);
+    const yearEnd=new Date(now.getFullYear(),11,31,23,59,59);
+    const pos=((now-yearStart)/(yearEnd-yearStart))*100;
+    const line=document.createElement('div');
+    line.className='todayLine';
+    line.style.left='calc('+pos+'% - 1px)';
+    chart.appendChild(line);
+  }
+  if(note)note.textContent='Total planned cost in selected period: '+formatEur(totals.reduce((a,b)=>a+b,0))+' EUR';
+}
+function renderDashboardFamilies(rows){
+  const box=document.getElementById('dashboardFamilies');
+  if(!box)return;
+  const counts={};
+  rows.forEach(r=>{const f=getDashboardFamily(r);counts[f]=(counts[f]||0)+1;});
+  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const max=Math.max(...entries.map(x=>x[1]),1);
+  box.innerHTML=entries.map(([name,count])=>'<div class="familyRow"><div>'+safeText(name)+'</div><div class="familyTrack"><div class="familyFill" style="width:'+Math.round(count/max*100)+'%"></div></div><strong>'+count+'</strong></div>').join('');
+}
+function renderDashboardOperationalStatus(rows,statusCounts){
+  const box=document.getElementById('dashboardOperationalStatus');
+  if(!box)return;
+  const defs=[
+    ['Available / ready for work','green'],
+    ['In work / service due','blue'],
+    ['Conserved / under service','yellow'],
+    ['Overdue / repair required','red']
+  ];
+  const total=Math.max(rows.length,1);
+  box.innerHTML=defs.map(([name,color])=>{
+    const count=statusCounts[name]||0;
+    return '<div class="statusBarRow"><div>'+safeText(name)+'</div><div class="statusBarTrack"><div class="statusBarFill '+color+'" style="width:'+Math.round(count/total*100)+'%"></div></div><strong>'+count+'</strong></div>';
+  }).join('');
+}
+function renderDashboardCurrentMonthPlan(rows){
+  const body=document.getElementById('dashboardCurrentMonthPlan');
+  if(!body)return;
+  const now=new Date();
+  const from=new Date(now.getFullYear(),now.getMonth(),1);
+  const to=new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59);
+  dashboardMonthPlanRows=[];
+  rows.forEach(row=>{
+    if(isExcludedFromServiceCost(row))return;
+    const inv=cleanValue(getEquipmentField(row,'inventory number'));
+    const master=cleanValue(getEquipmentField(row,'master'));
+    const m=parseDashboardDate(getEquipmentField(row,'next maintanence')||getEquipmentField(row,'next maintenance'));
+    if(m&&m>=from&&m<=to)dashboardMonthPlanRows.push({row,inv,type:'Maintenance',date:m,dateText:formatDashboardDate(getEquipmentField(row,'next maintanence')||getEquipmentField(row,'next maintenance')),master});
+    const v=parseDashboardDate(getEquipmentField(row,'next validation'));
+    if(v&&v>=from&&v<=to)dashboardMonthPlanRows.push({row,inv,type:'Validation',date:v,dateText:formatDashboardDate(getEquipmentField(row,'next validation')),master});
+  });
+  dashboardMonthPlanRows.sort((a,b)=>a.date-b.date);
+  if(!dashboardMonthPlanRows.length){
+    body.innerHTML='<tr><td colspan="4" class="subtle">No maintenance or validation due this month.</td></tr>';
+  }else{
+    body.innerHTML=dashboardMonthPlanRows.map(x=>'<tr><td><b>'+safeText(x.inv)+'</b></td><td>'+safeText(x.type)+'</td><td>'+safeText(x.dateText)+'</td><td>'+safeText(x.master||'-')+'</td></tr>').join('');
+  }
+  renderDashboardMonthPlanMap(false);
+}
+function toggleDashboardMonthMap(){
+  const map=document.getElementById('dashboardMonthPlanMap');
+  if(!map)return;
+  map.classList.toggle('active');
+  renderDashboardMonthPlanMap(map.classList.contains('active'));
+}
+function renderDashboardMonthPlanMap(forceShow){
+  const mapEl=document.getElementById('dashboardMonthPlanMap');
+  if(!mapEl||(!forceShow&&!mapEl.classList.contains('active')))return;
+  dashboardMonthPlanMap=initLeafletMap('dashboardMonthPlanMap',dashboardMonthPlanMap,15);
+  if(!dashboardMonthPlanMap)return;
+  if(dashboardMonthPlanLayer){dashboardMonthPlanLayer.clearLayers();}else{dashboardMonthPlanLayer=L.layerGroup().addTo(dashboardMonthPlanMap);}
+  const rows=dashboardMonthPlanRows.map(x=>({x,pos:normalizeLatLng(getEquipmentField(x.row,'last known latitude'),getEquipmentField(x.row,'last known longitude'))})).filter(y=>!!y.pos);
+  if(!rows.length){dashboardMonthPlanMap.setView(DEFAULT_MAP_CENTER,15);return;}
+  const bounds=[];
+  rows.forEach(y=>{
+    bounds.push(y.pos);
+    L.marker(y.pos).addTo(dashboardMonthPlanLayer).bindPopup('<b>'+safeText(y.x.inv)+'</b><br>'+safeText(y.x.type)+'<br>Expired: '+safeText(y.x.dateText)+'<br>Master: '+safeText(y.x.master||'-'));
+  });
+  if(bounds.length===1)dashboardMonthPlanMap.setView(bounds[0],18);
+  else dashboardMonthPlanMap.fitBounds(bounds,{padding:[32,32],maxZoom:18});
+  setTimeout(()=>dashboardMonthPlanMap.invalidateSize(),120);
+}
+
+
 function currentRowPayload(row){
   const payload={};
   equipmentColumns.forEach(col=>{payload[col]=displayEquipmentValue(col,getEquipmentField(row,col));});
@@ -2380,7 +3210,7 @@ function updateEquipmentEditButton(){
   if(!btn)return;
   btn.textContent=equipmentEditMode?'Save data':'Change data / Save data';
 }
-function toggleEquipmentEditMode(){
+function toggleEquipmentEditMode(){if(!requirePermission('equipmentEdit')){fakeToast('Access denied.');return;}
   if(!equipmentEditMode){
     equipmentEditMode=true;
     changedEquipmentRows.clear();
@@ -2416,7 +3246,7 @@ function normalizeEquipmentCell(event){
   if(!equipmentEditMode)return;
   event.target.innerText=event.target.innerText.trim();
 }
-async function saveChangedEquipmentRows(){
+async function saveChangedEquipmentRows(){if(!requirePermission('equipmentEdit')){fakeToast('Access denied.');return;}
   const btn=document.getElementById('equipmentEditSaveBtn');
   const err=document.getElementById('equipmentError');
   if(changedEquipmentRows.size===0){
@@ -2461,7 +3291,7 @@ function selectEquipment(inv){const r=equipment.find(x=>x.inv===inv);if(!r)retur
 function setTrendDepth(btn,depth){document.querySelectorAll('.segmented button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');fakeToast(depth+' trend view selected')}
 function applyLogFilters(){renderActionLogTable();}
 function clearLogFilters(){['logFilterDate','logFilterInventory','logFilterAction','logFilterField','logFilterOld','logFilterNew','logFilterUser','logFilterSource','logFilterComment'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});renderActionLogTable();fakeToast('Log filters cleared')}
-document.addEventListener('DOMContentLoaded',()=>{populateServicePlannerMonths();loadEquipmentFromSharePoint();});
+document.addEventListener('DOMContentLoaded',initAccess);
 
 
 function removeProblemReportsUi(){
@@ -2539,6 +3369,53 @@ setTimeout(removeProblemReportsUi,1200);
       <button class="btn secondary" onclick="closeGpsLocationModal()">Cancel</button>
       <button class="btn" id="approveGpsLocationBtn" onclick="approveGpsLocationUpdate()">Подтвердить / Approve</button>
     </div>
+  </div>
+</div>
+
+
+<div id="inventoryScanModal" class="inventoryScanModal">
+  <div class="inventoryScanDialog">
+    <div class="inventoryScanHeader">
+      <div>
+        <h2>Inventory QR scan</h2>
+        <div class="smallHint">Scan existing equipment QR code. The page will use inventory number from the QR link and will not open the equipment card.</div>
+      </div>
+      <button class="modalClose" onclick="stopInventoryScan()">×</button>
+    </div>
+    <div class="inventoryScanBody">
+      <div class="inventoryVideoWrap">
+        <video id="inventoryQrVideo" playsinline muted></video>
+        <div class="scanFrame"></div>
+      </div>
+      <div class="inventoryManualScan">
+        <input id="inventoryManualQrInput" placeholder="Manual test: paste QR link or inventory number">
+        <button class="btn secondary" onclick="handleManualInventoryQr()">Save manual scan</button>
+      </div>
+    </div>
+    <div class="inventoryScanActions">
+      <button class="btn secondary" onclick="stopInventoryScan()">Close scanner</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="accessModal" class="accessModal">
+  <div class="accessDialog">
+    <form onsubmit="submitAccessPassword(event)">
+      <div class="accessHeader">
+        <h2>MOC Welding Equipment</h2>
+        <p>Enter access password to open the maintenance tool. Your role will define available tabs and actions.</p>
+      </div>
+      <div class="accessBody">
+        <label>Password
+          <input id="accessPasswordInput" type="password" autocomplete="current-password" placeholder="Enter password">
+        </label>
+        <div id="accessError" class="accessError"></div>
+      </div>
+      <div class="accessActions">
+        <button id="accessLoginBtn" class="btn" type="submit">Login</button>
+      </div>
+    </form>
   </div>
 </div>
 
