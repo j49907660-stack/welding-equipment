@@ -400,9 +400,9 @@ body.equipment-editing #equipmentTable tr:hover td{background:#fffdf1}
 
 
 .dashboardMetricGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.dashboardPlanChart{height:260px;border-left:1px solid #d7e2ef;border-bottom:1px solid #d7e2ef;display:flex;align-items:flex-end;gap:12px;padding:16px 12px 34px;position:relative;overflow:hidden}
-.dashboardPlanChart .moneyBar{flex:1;min-width:38px;max-width:78px;background:linear-gradient(180deg,#0b74ad,#104f86);border-radius:9px 9px 0 0;color:white;font-weight:900;text-align:center;font-size:12px;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;position:relative}
-.dashboardPlanChart .moneyBar span{position:absolute;bottom:-26px;color:#64748b;font-size:12px;font-weight:800;left:50%;transform:translateX(-50%)}
+.dashboardPlanChart{height:260px;border-left:1px solid #d7e2ef;border-bottom:1px solid #d7e2ef;display:flex;align-items:flex-end;gap:6px;padding:16px 12px 38px;position:relative;overflow:hidden}
+.dashboardPlanChart .moneyBar{flex:1;min-width:18px;max-width:78px;background:linear-gradient(180deg,#0b74ad,#104f86);border-radius:9px 9px 0 0;color:white;font-weight:900;text-align:center;font-size:11px;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;position:relative}
+.dashboardPlanChart .moneyBar span{position:absolute;bottom:-29px;color:#64748b;font-size:11px;font-weight:800;left:50%;transform:translateX(-50%);white-space:nowrap}
 .dashboardPlanChart .todayLine{position:absolute;top:0;bottom:0;width:2px;background:#c93d37;box-shadow:0 0 0 3px rgba(201,61,55,.10)}
 .dashboardPlanChart .todayLine:before{content:'Today';position:absolute;top:6px;left:6px;background:#c93d37;color:white;border-radius:8px;padding:3px 6px;font-size:11px;font-weight:900}
 .dashboardPlanTableWrap{max-height:330px;overflow:auto;border:1px solid #e5edf6;border-radius:14px}
@@ -3105,27 +3105,51 @@ function renderDashboardPlanChart(items,from,to){
   const chart=document.getElementById('dashboardPlanChart');
   const note=document.getElementById('dashboardPlanNote');
   if(!chart)return;
-  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const totals=new Array(12).fill(0);
-  items.forEach(item=>{if(item.date)totals[item.date.getMonth()]+=item.cost;});
+
+  const monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let fromDate=from?new Date(from+'T00:00:00'):new Date(new Date().getFullYear(),0,1);
+  let toDate=to?new Date(to+'T23:59:59'):new Date(new Date().getFullYear(),11,31,23,59,59);
+  if(Number.isNaN(fromDate.getTime())||Number.isNaN(toDate.getTime())||fromDate>toDate){
+    const b=dashboardYearBounds();
+    fromDate=new Date(b.from+'T00:00:00');
+    toDate=new Date(b.to+'T23:59:59');
+  }
+
+  const monthBuckets=[];
+  const cursor=new Date(fromDate.getFullYear(),fromDate.getMonth(),1);
+  const lastMonth=new Date(toDate.getFullYear(),toDate.getMonth(),1);
+  while(cursor<=lastMonth){
+    const key=cursor.getFullYear()+'-'+String(cursor.getMonth()+1).padStart(2,'0');
+    const label=monthNames[cursor.getMonth()]+' '+String(cursor.getFullYear()).slice(2);
+    monthBuckets.push({key,label,total:0,date:new Date(cursor)});
+    cursor.setMonth(cursor.getMonth()+1);
+  }
+
+  const bucketMap=Object.fromEntries(monthBuckets.map(b=>[b.key,b]));
+  items.forEach(item=>{
+    if(!item.date)return;
+    const key=item.date.getFullYear()+'-'+String(item.date.getMonth()+1).padStart(2,'0');
+    if(bucketMap[key])bucketMap[key].total+=item.cost;
+  });
+
+  const totals=monthBuckets.map(b=>b.total);
   const max=Math.max(...totals,1);
-  chart.innerHTML=totals.map((v,i)=>{
-    const h=Math.max(6,Math.round((v/max)*185));
-    return '<div class="moneyBar" style="height:'+h+'px">'+(v?formatEur(v):'0')+'<span>'+months[i]+'</span></div>';
+  chart.innerHTML=monthBuckets.map(b=>{
+    const h=Math.max(6,Math.round((b.total/max)*185));
+    return '<div class="moneyBar" style="height:'+h+'px">'+(b.total?formatEur(b.total):'0')+'<span>'+safeText(b.label)+'</span></div>';
   }).join('');
+
   const now=new Date();
-  const fy=new Date(from+'T00:00:00');
-  const ty=new Date(to+'T23:59:59');
-  if(now>=fy&&now<=ty){
-    const yearStart=new Date(now.getFullYear(),0,1);
-    const yearEnd=new Date(now.getFullYear(),11,31,23,59,59);
-    const pos=((now-yearStart)/(yearEnd-yearStart))*100;
+  if(now>=fromDate&&now<=toDate){
+    const pos=((now-fromDate)/(toDate-fromDate))*100;
     const line=document.createElement('div');
     line.className='todayLine';
-    line.style.left='calc('+pos+'% - 1px)';
+    line.style.left='calc('+Math.max(0,Math.min(100,pos))+'% - 1px)';
     chart.appendChild(line);
   }
-  if(note)note.textContent='Total planned cost in selected period: '+formatEur(totals.reduce((a,b)=>a+b,0))+' EUR';
+
+  const totalValue=totals.reduce((a,b)=>a+b,0);
+  if(note)note.textContent='Total planned cost in selected period: '+formatEur(totalValue)+' EUR. Columns shown: '+monthBuckets.length+' month(s).';
 }
 function renderDashboardFamilies(rows){
   const box=document.getElementById('dashboardFamilies');
