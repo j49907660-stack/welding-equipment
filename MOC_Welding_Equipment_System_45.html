@@ -3136,16 +3136,28 @@ function renderDashboardPlanChart(items,from,to){
   const max=Math.max(...totals,1);
   chart.innerHTML=monthBuckets.map(b=>{
     const h=Math.max(6,Math.round((b.total/max)*185));
-    return '<div class="moneyBar" style="height:'+h+'px">'+(b.total?formatEur(b.total):'0')+'<span>'+safeText(b.label)+'</span></div>';
+    return '<div class="moneyBar" data-month-key="'+safeText(b.key)+'" style="height:'+h+'px">'+(b.total?formatEur(b.total):'0')+'<span>'+safeText(b.label)+'</span></div>';
   }).join('');
 
   const now=new Date();
   if(now>=fromDate&&now<=toDate){
-    const pos=((now-fromDate)/(toDate-fromDate))*100;
+    const todayKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
     const line=document.createElement('div');
     line.className='todayLine';
-    line.style.left='calc('+Math.max(0,Math.min(100,pos))+'% - 1px)';
     chart.appendChild(line);
+
+    requestAnimationFrame(()=>{
+      const bar=chart.querySelector('.moneyBar[data-month-key="'+todayKey+'"]');
+      if(bar){
+        const daysInMonth=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+        const dayFraction=(now.getDate()-1 + (now.getHours()/24))/(daysInMonth);
+        const x=bar.offsetLeft + (bar.offsetWidth * Math.max(0,Math.min(1,dayFraction)));
+        line.style.left=Math.round(x)+'px';
+      }else{
+        const pos=((now-fromDate)/(toDate-fromDate))*100;
+        line.style.left='calc('+Math.max(0,Math.min(100,pos))+'% - 1px)';
+      }
+    });
   }
 
   const totalValue=totals.reduce((a,b)=>a+b,0);
